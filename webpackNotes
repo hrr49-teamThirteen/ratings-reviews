@@ -1,0 +1,4 @@
+// i'll need a transpiler, probably babel
+// when I bundle everything, it transforms the jsx into js
+// webpack has loaders that will transform non-js into js
+// transpile es6 and jsx with babel
