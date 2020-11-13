@@ -1,4 +1,5 @@
 const React = require('react');
+const axios = require('axios');
 
 class App extends React.Component {
   constructor(props) {
@@ -8,4 +9,10 @@ class App extends React.Component {
       reviews: []
     };
   }
+
+  get() {
+    axios.get('');
+  }
 }
+
+// can use csv generator to generate csv files based on tables
