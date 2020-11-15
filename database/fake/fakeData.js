@@ -40,27 +40,12 @@ const fakeReview = () => {
 };
 
 const fakeData = (n) => {
-  console.log('I MADE IT INTO FAKEDATA!');
-  // create an empty array
   let products = [];
   let reviews = [];
-  // iterate through from 1 to n
   for (let i = 0; i < n; i++) {
-    console.log('MADE IT INTO THE FOR LOOP!');
-    // push a fakeProduct onto the empty array
     products.push(fakeProduct());
-    console.log('PRODUCTS IS CURRENTLY: ' + JSON.stringify(products));
     reviews.push(fakeReview());
-    console.log('REVIEWS IS CURRENTLY: ' + JSON.stringify(reviews));
   }
-  // return the initial array
-  console.log('HERE ARE THE PRODUCTS: ' + JSON.stringify(products));
-  console.log('HERE ARE THE REVIEWS: ' + JSON.stringify(reviews));
-  console.log('HERE IS THE LENGTH OF PRODUCTS: ' + products.length);
-  console.log('HERE IS THE LENGTH OF REVIEWS: ' + reviews.length);
-  console.log('HERE IS THE TYPE OF AN ITEM IN PRODUCTS: ' + typeof products[0]);
-  console.log('THIS IS THE FIRST ITEM IN PRODUCTS: ' + JSON.stringify(products[0]));
-
   return {products: products, reviews: reviews};
 };
 
