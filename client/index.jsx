@@ -50,5 +50,4 @@ class App extends React.Component {
     );
   }
 }
-
 // can use csv generator to generate csv files based on tables
