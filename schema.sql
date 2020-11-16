@@ -1,35 +1,36 @@
 CREATE TABLE products (
-  id int AUTO_INCREMENT PRIMARY KEY,
+  id int AUTO_INCREMENT PRIMARY KEY NOT NULL,
   product_name varchar(120),
   image_path varchar(120),
   department varchar(50)
 );
 
--- CREATE TABLE rateable_attributes (
---   id int AUTO_INCREMENT PRIMARY KEY,
---   attribute_name varchar(50)
--- );
+CREATE TABLE rateable_attributes (
+  id int AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  attribute_name varchar(50)
+);
 
--- CREATE TABLE users (
---   id int NOT NULL AUTO_INCREMENT,
---   username varchar(50)
--- );
+CREATE TABLE users (
+  id int AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  username varchar(50)
+);
 
--- CREATE TABLE images (
---   id int NOT NULL AUTO_INCREMENT,
---   loc varchar(100)
--- );
+CREATE TABLE images (
+  id int AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  loc varchar(100)
+);
 
--- CREATE TABLE reviews (
---   id int AUTO_INCREMENT,
---   user_id smallint,
---   star_rating tinyint,
---   helpfulness_score tinyint,
---   image_id int,
---   PRIMARY KEY (id),
---   FOREIGN KEY user_id REFERENCES users(id),
---   FOREIGN KEY image_id REFERENCES images(id)
--- );
+CREATE TABLE reviews (
+  id int AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  userid int,
+  star_rating tinyint,
+  helpfulness_score tinyint,
+  image_id int,
+  FOREIGN KEY (userid) REFERENCES users(id),
+  FOREIGN KEY (image_id) REFERENCES images(id)
+);
+
+-- I'm leaving this here because procedures are cool :D
 
 -- DROP PROCEDURE IF EXISTS TRANSFER_ATTRIBUTES;
 -- DELIMITER ;;
@@ -49,6 +50,6 @@ CREATE TABLE products (
 --   END;
 --   ;;
 
---   DELIMITER ;
+-- DELIMITER ;
 
---   CALL TRANSFER_ATTRIBUTES();
+-- CALL TRANSFER_ATTRIBUTES();
