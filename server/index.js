@@ -1,8 +1,14 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const getOne = require('../database/index.js').getOne;
+const getReviews = require('../database/index.js').getReviews;
+const postReview = require('../database/index.js').postReview;
+const createUser = require('../database/index.js').createUser;
 // const getAll = require('../database/index.js').getAll;
 
 const app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded());
 
 app.get('/products', (req, res) => {
   getOne((error, result) => {
@@ -14,7 +20,7 @@ app.get('/products', (req, res) => {
   });
 });
 
-app.get('reviews', (req, res) => {
+app.get('/reviews', (req, res) => {
   getReviews((error, result) => {
     if (error) {
       console.error(error);
@@ -24,13 +30,27 @@ app.get('reviews', (req, res) => {
   });
 });
 
-app.post('reviews', (req, res) => {
-  postReview((error, result) => {
+app.post('/reviews', (req, res) => {
+  postReview(req.body, (error, result) => {
     if (error) {
       console.error(error);
       return;
     }
+    console.log('RESULT RETURNING FROM REVIEWS POST ENDPOINT: ' + JSON.stringify(result));
     res.status(200).send(result);
+  });
+});
+
+app.post('/users', (req, res) => {
+  console.log('ABOUT TO CREATE A USER!');
+  createUser(req.body, (error, result) => {
+    if (error) {
+      console.error(error);
+      return;
+    }
+    console.log('RESULT RETURNING FROM USERS POST ENDPOINT: ' + JSON.stringify(result));
+    // what exactly should I send back on the response? It all seems to return the same way regardless
+    res.status(200).send(req.body);
   });
 });
 
