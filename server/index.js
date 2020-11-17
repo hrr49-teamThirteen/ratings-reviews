@@ -3,6 +3,8 @@ const getAll = require('../database/index.js').getAll;
 
 const app = express();
 
+// don't forget to serve up the static files from the public directory
+
 app.get('/products', (req, res) => {
   getAll((error, result) => {
     if (error) {
