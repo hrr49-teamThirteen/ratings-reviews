@@ -1,8 +1,11 @@
 const express = require('express');
 const getOne = require('../database/index.js').getOne;
+const getReviews = require('../database/index.js').getReviews;
+const postReview = require('../database/index.js').postReview;
 // const getAll = require('../database/index.js').getAll;
 
 const app = express();
+app.use(express.static(__dirname + '/../public/'));
 
 app.get('/products', (req, res) => {
   getOne((error, result) => {
@@ -14,7 +17,7 @@ app.get('/products', (req, res) => {
   });
 });
 
-app.get('reviews', (req, res) => {
+app.get('/reviews', (req, res) => {
   getReviews((error, result) => {
     if (error) {
       console.error(error);
@@ -24,7 +27,7 @@ app.get('reviews', (req, res) => {
   });
 });
 
-app.post('reviews', (req, res) => {
+app.post('/reviews', (req, res) => {
   postReview((error, result) => {
     if (error) {
       console.error(error);
