@@ -1,40 +1,76 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Axios from 'axios';
+import axios from 'axios';
 
-import getProduct from './getProduct.js';
-import ReviewHead from './components/ReviewHead.jsx';
+// import getProduct from './getProduct.js';
+import ReviewHead from './src/components/ReviewHead/ReviewHead.jsx';
+import ReviewContainer from './src/components/ReviewContainer/ReviewContainer.jsx';
+import ImageCarousel from './src/components/ImageCarousel/ImageCarousel.jsx';
 
 class App extends React.Component {
-  constructor(props) {
+  constructor(props) { // I need to somehow pass the dataSeed into props here!
     super(props);
 
     this.state = {
-      rateableAttributes: [],
+      prodId: 1,
+      currentUser: '',
+      rateableAttributes: [], // build a function in fakeData and call it here
       reviews: [],
-      visibleReviews: [],
-      images: []
+      visibleReviews: [], // this'll start empty of course
+      images: ['http://placeimg.com/640/480/sports', 'http://placeimg.com/640/480/animals', 'http://placeimg.com/640/480/business'] // this will be set randomly with fakeData
     };
   }
 
-  async getProduct() {
-    const response = await axios.get('/products');
-    this.state.rateableAttributes = response.rateableAttributes;
-    this.state.images = response.images;
+  getImages() {
+    console.log('HERES THE STATE OF THE PRODID: ' + this.state.prodId);
+    axios.get(`/${this.state.prodId}/images`)
+      .then(response => {
+        // can't I just use one setState for both?
+        console.log('RESPONSE: ' + JSON.stringify(response));
+        this.setState({images: response.data});
+      }).catch(error => {
+        console.error(error);
+      });
   }
 
-  async getReviews() {
-    const response = await axios.get('/reviews');
-    this.state.reviews = response.reviews;
+
+
+  // getProduct() {
+  //   // get product should be to a particular prodId
+  //   // there's a way to grab the prod id off the url itself and save myself some trouble as far as state
+  //   axios.get('/products')
+  //     .then(response => {
+  //       // can't I just use one setState for both?
+  //       this.setState({prodId: response.data.id});
+  //       this.setState({rateableAttributes: response.data.rateableAttributes});
+  //       // this.setState({images: response.images});
+  //     }).catch(error => {
+  //       console.error(error);
+  //     });
+  // }
+
+  getReviews() {
+    axios.get('/reviews')
+      .then(response => {
+        // what the heck's this bonus promise about?
+        new Promise((resolve, reject) => {
+          resolve(response);
+        }).then((response) => {
+          this.setState({reviews: response.data}); // can i change this to be response.reviews on the server side?
+        });
+      }).catch(error => {
+        reject(error);
+      });
   }
 
-  async postReview() {
-    const response = await axios.post('reviews');
+  postReview() {
+    // gotta make this work asyncronously
+    const response = axios.post('/reviews');
     let reviews = this.state.reviews;
     let visibleReviews = this.state.visibleReviews;
     reviews.unshift(response.body);
     visibleReviews.unshift(response.body);
-    setState({
+    this.setState({
       reviews: reviews,
       visibleReviews: visibleReviews
     });
@@ -55,7 +91,15 @@ class App extends React.Component {
   //   axios.get('');
   // }
 
-  render() {
+  componentDidMount() {
+    // i could get the id from the url and pass those in as arguments to these functions
+    // this.getProduct();
+    this.getReviews();
+    this.getImages();
+    console.log('this is the state of images after getImages: ' + this.state.images);
+  }
+
+  render() { // just get the getReviews data elsewhere
     return (
       <div>
         <div>
@@ -70,8 +114,8 @@ class App extends React.Component {
           />
         </div>
         <div>
-          <ReviewFeed
-            reviews = {this.state.reviews}
+          <ReviewContainer
+            reviews = {this.state.reviews} // gonna want this to be visible reviews eventually
             images = {this.state.images}
           />
         </div>
@@ -79,4 +123,8 @@ class App extends React.Component {
     );
   }
 }
+
 // can use csv generator to generate csv files based on tables
+ReactDOM.render(<App />, document.getElementById('app'));
+
+export default App;
