@@ -23,20 +23,20 @@ const fakeProduct = () => {
 //   });
 // };
 
-const fakeReview = () => {
-  return new Promise((resolve, reject) => {
+const fakeImage = () => {
+  return faker.image.image();
+};
 
-    resolve(faker.fake('{{internet.userName}}, {{lorem.slug}}, {{lorem.paragraph}}, {{random.number}}'));
-  }).then((error, result) => {
-    if (error) {
-      throw error;
-    }
-    result = result.split(',');
-    console.log('HERES THE RESULT: ' + result);
-    return {username: result[0], title: result[1], body: result[2], rating: result[3]};
-  }).catch(error => {
-    console.error(error);
-  });
+const fakeAttribute = () => {
+  return faker.commerce.productAdjective();
+};
+
+const fakeUser = () => {
+  return faker.internet.userName();
+};
+
+const fakeReview = () => {
+  return faker.fake('{{internet.userName}}, {{lorem.slug}}, {{lorem.paragraph}}');
 };
 
 const fakeData = (n) => {
@@ -44,6 +44,9 @@ const fakeData = (n) => {
   // create an empty array
   let products = [];
   let reviews = [];
+  let attributes = [];
+  let users = [];
+  let images = [];
   // iterate through from 1 to n
   for (let i = 0; i < n; i++) {
     console.log('MADE IT INTO THE FOR LOOP!');
@@ -52,16 +55,13 @@ const fakeData = (n) => {
     console.log('PRODUCTS IS CURRENTLY: ' + JSON.stringify(products));
     reviews.push(fakeReview());
     console.log('REVIEWS IS CURRENTLY: ' + JSON.stringify(reviews));
+    users.push(fakeUser());
+    images.push(fakeImage());
   }
-  // return the initial array
-  console.log('HERE ARE THE PRODUCTS: ' + JSON.stringify(products));
-  console.log('HERE ARE THE REVIEWS: ' + JSON.stringify(reviews));
-  console.log('HERE IS THE LENGTH OF PRODUCTS: ' + products.length);
-  console.log('HERE IS THE LENGTH OF REVIEWS: ' + reviews.length);
-  console.log('HERE IS THE TYPE OF AN ITEM IN PRODUCTS: ' + typeof products[0]);
-  console.log('THIS IS THE FIRST ITEM IN PRODUCTS: ' + JSON.stringify(products[0]));
-
-  return {products: products, reviews: reviews};
+  for (let i = 0; i < 5; i++) {
+    attributes.push(fakeAttribute());
+  }
+  return {products: products, reviews: reviews, attributes: attributes, users: users, images: images};
 };
 
 module.exports = fakeData;
