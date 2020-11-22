@@ -5,48 +5,66 @@ import axios from 'axios';
 // import getProduct from './getProduct.js';
 import ReviewHead from './src/components/ReviewHead/ReviewHead.jsx';
 import ReviewContainer from './src/components/ReviewContainer/ReviewContainer.jsx';
+import ImageCarousel from './src/components/ImageCarousel/ImageCarousel.jsx';
 
 class App extends React.Component {
   constructor(props) { // I need to somehow pass the dataSeed into props here!
     super(props);
 
     this.state = {
-      currentUser: 'Morgan Morbid',
-      rateableAttributes: ['Shape', 'Intensity', 'Fear Factor', 'Secretiveness', 'Sinister Power'], // build a function in fakeData and call it here
-      reviews: [{ // I'll want this to be based in a server request
-        'id': 3,
-        'userid': null,
-        'body': 'THIS IS A REVIEW!!',
-        'star_rating': 5,
-        'helpfulness_score': null,
-        'image_id': null
-      }],
-      visibleReviews: [{ // I'll want this to be based in a server request
-        'id': 3,
-        'userid': null,
-        'body': 'THIS IS A REVIEW!!',
-        'star_rating': 5,
-        'helpfulness_score': null,
-        'image_id': null
-      }], // this'll start empty of course
-      images: [] // this will be set randomly with fakeData
+      prodId: 1,
+      currentUser: '',
+      rateableAttributes: [], // build a function in fakeData and call it here
+      reviews: [],
+      visibleReviews: [], // this'll start empty of course
+      images: ['http://placeimg.com/640/480/sports', 'http://placeimg.com/640/480/animals', 'http://placeimg.com/640/480/business'] // this will be set randomly with fakeData
     };
   }
 
-  getProduct() {
-    const response = axios.get('/products');
-    this.setState({rateableAttributes: response.rateableAttributes});
-    this.setState({images: response.images});
+  getImages() {
+    console.log('HERES THE STATE OF THE PRODID: ' + this.state.prodId);
+    axios.get(`/${this.state.prodId}/images`)
+      .then(response => {
+        // can't I just use one setState for both?
+        console.log('RESPONSE: ' + JSON.stringify(response));
+        this.setState({images: response.data});
+      }).catch(error => {
+        console.error(error);
+      });
   }
+
+
+
+  // getProduct() {
+  //   // get product should be to a particular prodId
+  //   // there's a way to grab the prod id off the url itself and save myself some trouble as far as state
+  //   axios.get('/products')
+  //     .then(response => {
+  //       // can't I just use one setState for both?
+  //       this.setState({prodId: response.data.id});
+  //       this.setState({rateableAttributes: response.data.rateableAttributes});
+  //       // this.setState({images: response.images});
+  //     }).catch(error => {
+  //       console.error(error);
+  //     });
+  // }
 
   getReviews() {
     axios.get('/reviews')
-      .then((response) => {
-        this.setState({reviews: response.data}); // can i change this to be response.reviews on the server side?
+      .then(response => {
+        // what the heck's this bonus promise about?
+        new Promise((resolve, reject) => {
+          resolve(response);
+        }).then((response) => {
+          this.setState({reviews: response.data}); // can i change this to be response.reviews on the server side?
+        });
+      }).catch(error => {
+        reject(error);
       });
   }
 
   postReview() {
+    // gotta make this work asyncronously
     const response = axios.post('/reviews');
     let reviews = this.state.reviews;
     let visibleReviews = this.state.visibleReviews;
@@ -74,9 +92,11 @@ class App extends React.Component {
   // }
 
   componentDidMount() {
-    // do I need to make this a promise?
-    console.log('Did I make it here before the errors?');
+    // i could get the id from the url and pass those in as arguments to these functions
+    // this.getProduct();
     this.getReviews();
+    this.getImages();
+    console.log('this is the state of images after getImages: ' + this.state.images);
   }
 
   render() { // just get the getReviews data elsewhere
@@ -86,6 +106,11 @@ class App extends React.Component {
           <ReviewHead
             rateableAttributes = {this.state.rateableAttributes}
             quantityOfReviews = {this.state.reviews.length}
+          />
+        </div>
+        <div>
+          <ImageCarousel
+            images = {this.state.images}
           />
         </div>
         <div>
@@ -100,7 +125,6 @@ class App extends React.Component {
 }
 
 // can use csv generator to generate csv files based on tables
-console.log('GREETINGS FROM BEFORE THE REACTDOM RENDER');
 ReactDOM.render(<App />, document.getElementById('app'));
 
 export default App;

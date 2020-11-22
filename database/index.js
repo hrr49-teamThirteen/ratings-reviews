@@ -10,12 +10,35 @@ const connection = mysql.createConnection({
 
 connection.connect();
 
-const getOne = (callback) => {
-  connection.query('SELECT column FROM products ORDER BY RAND() LIMIT 1;', (error, result) => {
+const fetchImages = (prodId, callback) => {
+  console.log('the prodId: ' + prodId);
+  connection.query(`SELECT loc FROM images WHERE prod_id=${prodId};`, (error, result) => {
     if (error) {
       console.error(error);
       return;
     }
+    console.log('RESULT OF FETCHING IMAGE: ' + result);
+    callback(null, result);
+  });
+};
+
+const fetchUser = (userid, callback) => {
+  connection.query(`SELECT FROM users(username) WHERE id=${userid};`, (error, result) => {
+    if (error) {
+      console.error(error);
+      return;
+    }
+    callback(null, result);
+  });
+};
+
+const getOne = (callback) => {
+  connection.query('SELECT * FROM products ORDER BY RAND() LIMIT 1;', (error, result) => {
+    if (error) {
+      console.error(error);
+      return;
+    }
+    console.log('THE PRODUCT THAT CAME BACK: ' + JSON.stringify(result));
     callback(null, result);
   });
 };
@@ -26,17 +49,18 @@ const getReviews = (callback) => {
       console.error(error);
       return;
     }
+    for (let review of result) {
+      if (review.username === undefined) {
+        fetchUser(review.userid, (error, result) => {
+          review.username = result;
+        });
+      }
+    }
     callback(null, result);
   });
 };
 
 const postReview = (data, callback) => {
-  // data = JSON.parse(data);
-  console.log('This is data itself: ' + data);
-  console.log('This is data stringified: ' + JSON.stringify(data));
-  console.log('This is data body: ' + data.body);
-  console.log('This is data star_rating: ' + data.star_rating);
-  console.log('This is data userid: ' + data.userid);
   connection.query(`INSERT INTO reviews (userid, body, star_rating, helpfulness_score) VALUES(${data.userid}, ${data.body}, ${data.star_rating}, 0);`, (error, result) => {
     if (error) {
       console.error(error);
@@ -47,7 +71,6 @@ const postReview = (data, callback) => {
 };
 
 const createUser = (data, callback) => {
-  console.log('heres data: ' + data);
   connection.query(`INSERT INTO users (username) VALUES(${data.username});`, (error, result) => {
     if (error) {
       console.error(error);
@@ -83,5 +106,7 @@ module.exports = {
   getOne,
   getReviews,
   postReview,
-  createUser
+  createUser,
+  fetchUser,
+  fetchImages
 };

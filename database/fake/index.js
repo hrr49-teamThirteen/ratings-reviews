@@ -21,13 +21,34 @@ const seedFakeData = async function (n) {
   const dataSeed = fakeData(n);
   console.log('HERES THE DATASEED: ' + JSON.stringify(dataSeed));
   for (let product of dataSeed.products) {
-    let queryString = 'INSERT INTO products (product_name, image_path, department) VALUES(?, ?, ?);';
+    let queryString = 'INSERT INTO products (product_name, department) VALUES(?, ?);';
     let params = [product.productName, product.productImage, product.department];
-    let insertedBatch = await connection.query(queryString, params);
+    await connection.query(queryString, params);
   }
   for (let review of dataSeed.reviews) {
-    let queryString = 'INSERT INTO reviews (star_rating, helpfulness_score, image_id) VALUES(?, ?, ?);';
-    let params = [review.user, product.productImage, product.department];
+    let queryString = 'INSERT INTO reviews (body, helpfulness_score) VALUES(?, ?);';
+    console.log('HERES REVIEW ITSELF: ' + review);
+    let params = [review, 0];
+    await connection.query(queryString, params);
+  }
+  for (let attribute of dataSeed.attributes) {
+    let queryString = 'INSERT INTO rateable_attributes (attributeName) VALUES (?);';
+    await connection.query(queryString, [attribute]);
+  }
+  for (let user of dataSeed.users) {
+    let queryString = 'INSERT INTO users (username) VALUES (?);';
+    await connection.query(queryString, [user]);
+  }
+  var i = 1;
+  for (let image of dataSeed.images) { // currently, 1 image per product. considerably more per product and a fairly even by variable distribution is eventual goal
+    let queryString = 'INSERT INTO images (prod_id, loc) VALUES (?, ?);';
+    // let nextId;
+    // nextId = await connection.query('SELECT COUNT(*) AS total FROM products;');
+    // console.log(typeof nextId);
+    // console.log('THE NEXT ID: ' + Object.keys(nextId));
+    // nextId++;
+    await connection.query(queryString, [i, image]);
+    i++;
   }
   connection.end();
 };
