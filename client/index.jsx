@@ -22,7 +22,7 @@ class App extends React.Component {
   }
 
   getImages() {
-    axios.get(`/api/${this.state.prodId}/images`)
+    axios.get(`/api/ratings/${this.state.prodId}/images`)
       .then(response => {
         // can't I just use one setState for both?
         this.setState({images: response.data});
@@ -48,7 +48,7 @@ class App extends React.Component {
   // }
 
   getReviews() {
-    axios.get('/api/reviews')
+    axios.get('/api/ratings/reviews')
       .then(response => {
         // what the heck's this bonus promise about?
         new Promise((resolve, reject) => {
@@ -63,7 +63,7 @@ class App extends React.Component {
 
   postReview() {
     // gotta make this work asyncronously
-    const response = axios.post('/api/reviews');
+    const response = axios.post('/api/ratings/reviews');
     let reviews = this.state.reviews;
     let visibleReviews = this.state.visibleReviews;
     reviews.unshift(response.body);
