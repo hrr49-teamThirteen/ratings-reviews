@@ -2,10 +2,10 @@ import React from 'react';
 import Image from '../Image/Image.jsx';
 
 const ImageCarousel = ({images}) => {
-  console.log('HERE ARE THE IMAGECAROUSEL IMAGES: ' + images);
   const imageList = images || [];
   return (
     <div>
+      <div>Review images</div>
       {imageList.map(image => {
         return (<Image
           image = {image}

@@ -56,6 +56,8 @@ const fakeData = (n) => {
     reviews.push(fakeReview());
     console.log('REVIEWS IS CURRENTLY: ' + JSON.stringify(reviews));
     users.push(fakeUser());
+  }
+  for (let i = 0; i < 5 * n; i++) {
     images.push(fakeImage());
   }
   for (let i = 0; i < 5; i++) {

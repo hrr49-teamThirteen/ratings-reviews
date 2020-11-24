@@ -22,11 +22,9 @@ class App extends React.Component {
   }
 
   getImages() {
-    console.log('HERES THE STATE OF THE PRODID: ' + this.state.prodId);
-    axios.get(`/${this.state.prodId}/images`)
+    axios.get(`/api/${this.state.prodId}/images`)
       .then(response => {
         // can't I just use one setState for both?
-        console.log('RESPONSE: ' + JSON.stringify(response));
         this.setState({images: response.data});
       }).catch(error => {
         console.error(error);
@@ -38,7 +36,7 @@ class App extends React.Component {
   // getProduct() {
   //   // get product should be to a particular prodId
   //   // there's a way to grab the prod id off the url itself and save myself some trouble as far as state
-  //   axios.get('/products')
+  //   axios.get('/api/products')
   //     .then(response => {
   //       // can't I just use one setState for both?
   //       this.setState({prodId: response.data.id});
@@ -50,7 +48,7 @@ class App extends React.Component {
   // }
 
   getReviews() {
-    axios.get('/reviews')
+    axios.get('/api/reviews')
       .then(response => {
         // what the heck's this bonus promise about?
         new Promise((resolve, reject) => {
@@ -65,7 +63,7 @@ class App extends React.Component {
 
   postReview() {
     // gotta make this work asyncronously
-    const response = axios.post('/reviews');
+    const response = axios.post('/api/reviews');
     let reviews = this.state.reviews;
     let visibleReviews = this.state.visibleReviews;
     reviews.unshift(response.body);
@@ -96,7 +94,6 @@ class App extends React.Component {
     // this.getProduct();
     this.getReviews();
     this.getImages();
-    console.log('this is the state of images after getImages: ' + this.state.images);
   }
 
   render() { // just get the getReviews data elsewhere
@@ -125,6 +122,6 @@ class App extends React.Component {
 }
 
 // can use csv generator to generate csv files based on tables
-ReactDOM.render(<App />, document.getElementById('app'));
+ReactDOM.render(<App />, document.getElementById('application'));
 
 export default App;

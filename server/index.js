@@ -20,7 +20,7 @@ app.use(express.static(__dirname + '/../public/'));
 
 
 // make image api route
-app.get('/:prodId/images', (req, res) => {
+app.get('/api/:prodId/images', (req, res) => {
   console.log('HERE IS REQS HEADERS: ' + req.headers);
   fetchImages(req.params.prodId, (error, result) => {
     if (error) {
@@ -31,7 +31,7 @@ app.get('/:prodId/images', (req, res) => {
   });
 });
 
-app.get('/products', (req, res) => {
+app.get('/api/products', (req, res) => {
   getOne((error, result) => {
     if (error) {
       console.error(error);
@@ -41,7 +41,7 @@ app.get('/products', (req, res) => {
   });
 });
 
-app.get('/reviews', (req, res) => {
+app.get('/api/reviews', (req, res) => {
   getReviews((error, result) => {
     if (error) {
       console.error(error);
@@ -52,7 +52,7 @@ app.get('/reviews', (req, res) => {
   });
 });
 
-app.post('/reviews', (req, res) => {
+app.post('/api/reviews', (req, res) => {
   postReview((error, result) => {
     if (error) {
       console.error(error);
@@ -62,7 +62,7 @@ app.post('/reviews', (req, res) => {
   });
 });
 
-app.get('/users', (req, res) => { // PASS IN THE USERID HERE SOMEHOW
+app.get('/api/users', (req, res) => { // PASS IN THE USERID HERE SOMEHOW
   console.log('THIS IS REQS DATA: ' + req.data);
   fetchUser(req.data.userid, (error, result) => { // PASS IT IN ON THIS LINE DUDE
     if (error) {
@@ -84,7 +84,7 @@ app.get('/users', (req, res) => { // PASS IN THE USERID HERE SOMEHOW
 //   });
 // });
 
-var port = 3000;
+var port = 4000;
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}...`);
