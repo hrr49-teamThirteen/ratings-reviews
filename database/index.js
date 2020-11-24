@@ -3,7 +3,8 @@ const mysql = require('mysql');
 const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  database: 'reviewsDB'
+  database: 'reviewsDB',
+  insecureAuth: true
 });
 
 // create the functions

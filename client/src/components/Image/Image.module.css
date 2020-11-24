@@ -1,4 +1,7 @@
-/* .image {
-  margin-left: 10px;
-  margin-right: 10px;
-} */
+.image {
+  display: inline-block;
+  max-width: 125px;
+  max-height: 125px;
+  width: auto;
+  height: auto;
+}

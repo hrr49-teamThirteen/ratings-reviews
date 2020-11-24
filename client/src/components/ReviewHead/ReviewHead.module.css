@@ -1,0 +1,9 @@
+.star-rating-table {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+}
+
+.stars {
+  grid-column: 2;
+}

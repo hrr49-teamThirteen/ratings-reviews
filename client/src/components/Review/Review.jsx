@@ -1,9 +1,10 @@
 import React from 'react';
+import StarMeter from '../StarMeter/StarMeter.jsx';
 
 const Review = ({review}) => {
-  console.log(JSON.stringify(review));
   return (
     <div>
+      {/* <StarMeter score={review.starRating} /> */}
       <div>{review.username}</div>
       <div>{review.body}</div>
       <div>{review.starRating}</div>
