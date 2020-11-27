@@ -6,7 +6,7 @@ const ImageCarousel = ({images}) => {
   const imageList = images || [];
   return (
     <div>
-      <h2>Review images</h2>
+      <h2 className={styles.carouselHeader}>Review images</h2>
       {imageList.map(image => {
         return (<Image
           image = {image}

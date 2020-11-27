@@ -26,9 +26,9 @@ const seedFakeData = async function (n) {
     await connection.query(queryString, params);
   }
   for (let review of dataSeed.reviews) {
-    let queryString = 'INSERT INTO reviews (body, helpfulness_score) VALUES(?, ?);';
+    let queryString = 'INSERT INTO reviews (body, helpfulness_score, datePosted) VALUES(?, ?, ?);';
     console.log('HERES REVIEW ITSELF: ' + review);
-    let params = [review, 0];
+    let params = [review, 0, review.datePosted];
     await connection.query(queryString, params);
   }
   for (let attribute of dataSeed.attributes) {

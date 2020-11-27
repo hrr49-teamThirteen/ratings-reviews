@@ -17,7 +17,7 @@ class App extends React.Component {
       rateableAttributes: [], // build a function in fakeData and call it here
       reviews: [],
       visibleReviews: [], // this'll start empty of course
-      images: ['http://placeimg.com/640/480/sports', 'http://placeimg.com/640/480/animals', 'http://placeimg.com/640/480/business'] // this will be set randomly with fakeData
+      images: [] // this will be set randomly with fakeData
     };
   }
 

@@ -1,9 +1,10 @@
 import React from 'react';
 import StarMeter from '../StarMeter/StarMeter.jsx';
+import styles from './Review.module.css';
 
 const Review = ({review}) => {
   return (
-    <div>
+    <div className = {styles.review}>
       {/* <StarMeter score={review.starRating} /> */}
       <div>{review.username}</div>
       <div>{review.body}</div>
