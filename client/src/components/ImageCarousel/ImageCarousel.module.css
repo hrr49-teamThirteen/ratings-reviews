@@ -1,4 +1,4 @@
-.ImageCarousel {
+h2 {
   display: block;
-  justify-items: space-between;
+  align-self: center;
 }

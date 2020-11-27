@@ -1,7 +1,13 @@
 .image {
-  display: inline-block;
-  max-width: 125px;
-  max-height: 125px;
-  width: auto;
+  max-width: 130%;
   height: auto;
+}
+
+.imgContainer {
+  display: inline-block;
+  width: 125px;
+  height: 125px;
+  overflow: hidden;
+  margin-top: 16px;
+  margin-right: 16px;
 }

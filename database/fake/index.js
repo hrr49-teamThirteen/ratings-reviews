@@ -6,8 +6,7 @@ const util = require('util');
 const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  database: 'reviewsDB',
-  password: 'password'
+  database: 'reviewsDB'
 });
 
 connection.connect((err) => {
