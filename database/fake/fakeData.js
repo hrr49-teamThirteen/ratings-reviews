@@ -36,7 +36,7 @@ const fakeUser = () => {
 };
 
 const fakeReview = () => {
-  return faker.fake('{{internet.userName}}, {{lorem.slug}}, {{lorem.paragraph}}');
+  return faker.fake('{{internet.userName}}, {{lorem.slug}}, {{lorem.paragraph}}, {{time.recent}}');
 };
 
 const fakeData = (n) => {
@@ -54,7 +54,7 @@ const fakeData = (n) => {
     products.push(fakeProduct());
     console.log('PRODUCTS IS CURRENTLY: ' + JSON.stringify(products));
     reviews.push(fakeReview());
-    console.log('REVIEWS IS CURRENTLY: ' + JSON.stringify(reviews));
+    console.log('FIRST REVIEW IS CURRENTLY: ' + JSON.stringify(reviews)[0]);
     users.push(fakeUser());
   }
   for (let i = 0; i < 5 * n; i++) {

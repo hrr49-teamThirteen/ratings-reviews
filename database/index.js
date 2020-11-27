@@ -24,7 +24,7 @@ const fetchImages = (prodId, callback) => {
 };
 
 const fetchUser = (userid, callback) => {
-  connection.query(`SELECT FROM users(username) WHERE id=${userid};`, (error, result) => {
+  connection.query(`SELECT * FROM users(username) WHERE id=${userid};`, (error, result) => {
     if (error) {
       console.error(error);
       return;
