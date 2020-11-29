@@ -24,11 +24,12 @@ class Review extends React.Component {
     return (
       <div className = {styles.review}>
         <StarMeter score={this.props.review.starRating} />
-        <div className={styles.username}>USERNAME: {this.props.review.username}</div>
-        <div className={styles.body}>BODY: {this.props.review.body}</div>
+        <div className={styles.username}>{this.props.review.username}</div>
+        <div className={styles.datePosted}>{this.props.datePosted}</div>
+        <div className={styles.body}>{this.props.review.body}</div>
         {/* <div className={styles.starRating}>STAR RATING: {review.star_rating}</div> */}
         <Image image={this.state.image}/>
-        <div className={styles.helpfulness}>HELPFULNESS: {this.props.review.helpfulness_score}</div>
+        <div className={styles.helpfulness}>{this.props.review.helpfulness_score}</div>
       </div>
     );
   }
