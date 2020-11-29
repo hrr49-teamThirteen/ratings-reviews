@@ -1,0 +1,1 @@
+ssh -i '/Users/samgoldie/hack-reactor-repos/fec/SamGProxy/NearMiss.pem' ubuntu@ec2-18-222-190-75.us-east-2.compute.amazonaws.com
