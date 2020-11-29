@@ -2,12 +2,14 @@ import React from 'react';
 import StarMeter from '../StarMeter/StarMeter.jsx';
 import styles from './Review.module.css';
 import Image from '../Image/Image.jsx';
+import HelpfulnessScore from '../HelpfulnessScore/HelpfulnessScore.jsx';
 
 class Review extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      image: null
+      image: null,
+      helpfulnessScore: props.helpfulnessScore
     };
   }
 
@@ -29,7 +31,7 @@ class Review extends React.Component {
         <div className={styles.body}>{this.props.review.body}</div>
         {/* <div className={styles.starRating}>STAR RATING: {review.star_rating}</div> */}
         <Image image={this.state.image}/>
-        <div className={styles.helpfulness}>{this.props.review.helpfulness_score}</div>
+        <HelpfulnessScore helpfulnessScore={this.state.helpfulnessScore}/>
       </div>
     );
   }
