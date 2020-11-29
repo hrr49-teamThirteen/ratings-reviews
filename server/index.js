@@ -86,7 +86,7 @@ app.get('/api/ratings/users', (req, res) => { // PASS IN THE USERID HERE SOMEHOW
 //   });
 // });
 
-var port = 4000;
+var port = 4444;
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}...`);
