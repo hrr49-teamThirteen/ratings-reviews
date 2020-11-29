@@ -23,7 +23,8 @@ CREATE TABLE images (
 
 CREATE TABLE reviews (
   id int AUTO_INCREMENT PRIMARY KEY NOT NULL,
-  datePosted varchar(80);
+  title varchar(50),
+  datePosted varchar(120),
   username varchar(100),
   body varchar(1000),
   star_rating tinyint,

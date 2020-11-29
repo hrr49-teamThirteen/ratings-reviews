@@ -1,0 +1,7 @@
+.star {
+  display: relative;
+  fill: #ffd700;
+  stroke: rgb(202, 134, 0);
+  stroke-width: 1.5;
+  fill-rule: nonzero;
+}

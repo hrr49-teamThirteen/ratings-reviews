@@ -10,7 +10,7 @@
   "scripts": {
     "start": "nodemon ./server/index.js",
     "seed": "node ./database/fake/index.js",
-    "build": "webpack --watch",
+    "build": "webpack --watch -d eval-source-map",
     "test": "jest"
   },
   "dependencies": {
@@ -22,6 +22,7 @@
     "mysql": "^2.18.1",
     "promisify": "0.0.3",
     "puppeteer": "^5.4.1",
+    "random-date-generator": "^1.0.2",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "regenerator-runtime": "^0.13.7"
