@@ -13,3 +13,7 @@
 .username {
   display: inline-block;
 }
+
+.datePosted {
+  display: inline-block;
+}
