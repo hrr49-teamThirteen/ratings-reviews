@@ -13,6 +13,8 @@ connection.connect();
 
 const fetchImages = (prodId, callback) => {
   console.log('the prodId: ' + prodId);
+  const imageQuery = `SELECT loc FROM images WHERE prod_id=${prodId};`;
+  console.log('IMAGE QUERY: ' + imageQuery);
   connection.query(`SELECT loc FROM images WHERE prod_id=${prodId};`, (error, result) => {
     if (error) {
       console.error(error);
@@ -51,12 +53,13 @@ const getReviews = (callback) => {
       return;
     }
     for (let review of result) {
-      if (review.username === undefined) {
+      if (review.username === null) {
         fetchUser(review.userid, (error, result) => {
           review.username = result;
         });
       }
     }
+    console.log('This is the result after username processing:' + JSON.stringify(result));
     callback(null, result);
   });
 };

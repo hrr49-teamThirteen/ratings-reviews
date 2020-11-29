@@ -1,5 +1,6 @@
 const faker = require('faker');
 const mysql = require('mysql');
+const DateGenerator = require('random-date-generator');
 
 // add more commerce.productAdjective to this string-object?
 const fakeProduct = () => {
@@ -36,7 +37,12 @@ const fakeUser = () => {
 };
 
 const fakeReview = () => {
-  return faker.fake('{{internet.userName}}, {{lorem.slug}}, {{lorem.paragraph}}, {{time.recent}}');
+  return {
+    username: faker.internet.userName(),
+    title: faker.lorem.slug(),
+    body: faker.lorem.paragraph(),
+    datePosted: DateGenerator.getRandomDateInRange(new Date(2015, 1, 1), new Date(2020, 11, 27))
+  };
 };
 
 const fakeData = (n) => {

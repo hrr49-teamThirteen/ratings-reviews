@@ -7,7 +7,7 @@ import StarScore from '../StarScore/StarScore.jsx';
 const ReviewHead = (props) => {
   return (
     <div>
-      <h1>Guest Ratings and Reviews</h1>
+      <h2>Guest Ratings &amp; Reviews</h2>
       <div class='star-rating-table'>
         <StarScore
           starRating = {5}

@@ -6,10 +6,10 @@ const ImageCarousel = ({images}) => {
   const imageList = images || [];
   return (
     <div>
-      <h2 className={styles.carouselHeader}>Review images</h2>
+      <h3 className={styles.carouselHeader}>Review images</h3>
       {imageList.map(image => {
         return (<Image
-          image = {image}
+          image = {image.loc}
         />);
       })}
     </div>

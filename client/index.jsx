@@ -24,28 +24,13 @@ class App extends React.Component {
   getImages() {
     axios.get(`/api/ratings/${this.state.prodId}/images`)
       .then(response => {
+        console.log('this is the data of the response: ' + response.data);
         // can't I just use one setState for both?
         this.setState({images: response.data});
       }).catch(error => {
         console.error(error);
       });
   }
-
-
-
-  // getProduct() {
-  //   // get product should be to a particular prodId
-  //   // there's a way to grab the prod id off the url itself and save myself some trouble as far as state
-  //   axios.get('/api/products')
-  //     .then(response => {
-  //       // can't I just use one setState for both?
-  //       this.setState({prodId: response.data.id});
-  //       this.setState({rateableAttributes: response.data.rateableAttributes});
-  //       // this.setState({images: response.images});
-  //     }).catch(error => {
-  //       console.error(error);
-  //     });
-  // }
 
   getReviews() {
     axios.get('/api/ratings/reviews')
@@ -89,11 +74,11 @@ class App extends React.Component {
   //   axios.get('');
   // }
 
-  componentDidMount() {
+  async componentDidMount() {
     // i could get the id from the url and pass those in as arguments to these functions
     // this.getProduct();
-    this.getReviews();
-    this.getImages();
+    await this.getImages();
+    await this.getReviews();
   }
 
   render() { // just get the getReviews data elsewhere

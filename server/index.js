@@ -21,12 +21,14 @@ app.use(express.static(__dirname + '/../public/'));
 
 // make image api route
 app.get('/api/ratings/:prodId/images', (req, res) => {
-  console.log('HERE IS REQS HEADERS: ' + req.headers);
+  // console.log('HERE IS REQS HEADERS: ' + JSON.stringify(req.headers));
+  console.log('the params on req: ' + JSON.stringify(req.params));
   fetchImages(req.params.prodId, (error, result) => {
     if (error) {
       console.error(error);
       return;
     }
+    console.log('this is the result of the image api: ' + result);
     res.status(200).send(result);
   });
 });

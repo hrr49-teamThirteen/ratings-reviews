@@ -25,10 +25,22 @@ const seedFakeData = async function (n) {
     let params = [product.productName, product.productImage, product.department];
     await connection.query(queryString, params);
   }
+  var i = 4;
+  for (let image of dataSeed.images) { // currently, 1 image per product. considerably more per product and a fairly even by variable distribution is eventual goal
+    let queryString = 'INSERT INTO images (prod_id, loc) VALUES (?, ?);';
+    // let nextId;
+    // nextId = await connection.query('SELECT COUNT(*) AS total FROM products;');
+    // console.log(typeof nextId);
+    // console.log('THE NEXT ID: ' + Object.keys(nextId));
+    // nextId++;
+    await connection.query(queryString, [Math.floor(i / 4), image]);
+    i++;
+  }
   for (let review of dataSeed.reviews) {
-    let queryString = 'INSERT INTO reviews (body, helpfulness_score, datePosted) VALUES(?, ?, ?);';
+    let queryString = 'INSERT INTO reviews (body, helpfulness_score, datePosted, username, title, star_rating) VALUES(?, ?, ?, ?, ?, ?);';
     console.log('HERES REVIEW ITSELF: ' + review);
-    let params = [review, 0, review.datePosted];
+    let params = [review.body, 0, review.datePosted, review.username, review.title, Math.floor(Math.random() * 5) + 1];
+    // shouldn't a six star review be technically possible? how do i fix?
     await connection.query(queryString, params);
   }
   for (let attribute of dataSeed.attributes) {
@@ -38,17 +50,6 @@ const seedFakeData = async function (n) {
   for (let user of dataSeed.users) {
     let queryString = 'INSERT INTO users (username) VALUES (?);';
     await connection.query(queryString, [user]);
-  }
-  var i = 1;
-  for (let image of dataSeed.images) { // currently, 1 image per product. considerably more per product and a fairly even by variable distribution is eventual goal
-    let queryString = 'INSERT INTO images (prod_id, loc) VALUES (?, ?);';
-    // let nextId;
-    // nextId = await connection.query('SELECT COUNT(*) AS total FROM products;');
-    // console.log(typeof nextId);
-    // console.log('THE NEXT ID: ' + Object.keys(nextId));
-    // nextId++;
-    await connection.query(queryString, [i, image]);
-    i++;
   }
   connection.end();
 };
