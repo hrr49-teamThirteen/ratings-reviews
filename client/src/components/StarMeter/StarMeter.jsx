@@ -5,7 +5,7 @@ const StarMeter = (props) => {
   const starShape = '18.380 17.55 3.57 17.55 15.55 26.08 10.94 39.97 22.99 31.39 35.05 39.97 30.44 26.08 42.42 17.55 27.61 17.55 22.99 3.61';
   return (
     <svg height="25" width="110">
-      <polygon class={styles.star} points={starShape}
+      <polygon class={styles.first}class={styles.star} points={starShape}
         transform=
           "scale(0.5 0.5)"
       />
