@@ -2,13 +2,11 @@ import React from 'react';
 import styles from './StarScore.module.css';
 
 const StarScore = (props) => {
-  const starStyle = `height:15px;width:${props.percentage}`;
   return (
     <div className='starScore'>
       <div class={styles.stars}>{props.starRating} stars</div>
       <div class="bar">
-        {/* how am i going to reference the props within the inline styling? */}
-        <div class="filled" style={starStyle}></div>
+        <div class={styles.filled}></div>
       </div>
       <div class='star-percentage'>35%</div>
     </div>
