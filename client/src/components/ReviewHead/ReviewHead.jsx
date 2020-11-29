@@ -13,6 +13,22 @@ const ReviewHead = (props) => {
           starRating = {5}
           percentage = {30}
         />
+        <StarScore
+          starRating = {4}
+          percentage = {25}
+        />
+        <StarScore
+          starRating = {3}
+          percentage = {20}
+        />
+        <StarScore
+          starRating = {2}
+          percentage = {15}
+        />
+        <StarScore
+          starRating = {1}
+          percentage = {10}
+        />
       </div>
     </div>
   );
