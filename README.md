@@ -38,20 +38,17 @@ npm install
 ```
 
 ## Endpoints:
-### /api/ratings/:prodId/images
-GET:
+### /api/ratings/images/insert/:prodId/?loc=’path’
+#### Insert an image
+#### prodId=product id, loc=image path
 
-### /api/ratings/products
-GET:
+### /api/ratings/images/:prodId
+#### Returns a list of images for a product id
 
-### /api/ratings/reviews
-GET:
+### /api/ratings/images/update/:imgId/:prodId?loc=’path’
+#### Update an image
+#### imgId=image id, prodId=product id, loc=image path
 
-### /api/ratings/reviews
-POST:
-Calls function postReview()
-
-### /api/ratings/users
-GET:
-Params: Req.data.userid
-Calls function: fetchUser()
+### /api/ratings/images/delete/:imgId
+#### Delete an image
+#### imgId=image id

@@ -22,7 +22,7 @@ class App extends React.Component {
   }
 
   getImages() {
-    axios.get(`/api/ratings/${this.state.prodId}/images`)
+    axios.get(`/api/ratings/images/${this.state.prodId}`)
       .then(response => {
         console.log('this is the data of the response: ' + response.data);
         // can't I just use one setState for both?

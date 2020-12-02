@@ -13,14 +13,30 @@ const postReview = require('../database/index.js').postReview;
 const fetchUser = require('../database/index.js').fetchUser;
 const fetchImages = require('../database/index.js').fetchImages;
 
+const db = require('../database/index.js');
+
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(__dirname + '/../public/'));
 
+// =========== IMAGES ==========
+// add image
+app.post('/api/ratings/images/insert/:prodId', (req, res) => {
+  const prodId = Number(req.params.prodId);
+  const loc = String(req.query.loc);
 
-// make image api route
-app.get('/api/ratings/:prodId/images', (req, res) => {
+  db.createImage(prodId, loc, (err, dat) => {
+    if (err) {
+      res.status(401).send(err);
+    } else {
+      res.status(200).send(dat);
+    }
+  });
+});
+
+// return images for a product. originally: /api/ratings/:prodId/images
+app.get('/api/ratings/images/:prodId', (req, res) => {
   // console.log('HERE IS REQS HEADERS: ' + JSON.stringify(req.headers));
   console.log('the params on req: ' + JSON.stringify(req.params));
   fetchImages(req.params.prodId, (error, result) => {
@@ -32,6 +48,35 @@ app.get('/api/ratings/:prodId/images', (req, res) => {
     res.status(200).send(result);
   });
 });
+
+// Update image product id, or location, based on image id.
+app.post('/api/ratings/images/update/:imgId/:prodId', (req, res) => {
+  const imgId = Number(req.params.imgId);
+  const prodId = Number(req.params.prodId);
+  const loc = String(req.query.loc);
+
+  db.updateImage(imgId, prodId, loc, (err, dat) => {
+    if (err) {
+      res.status(401).send(err);
+    } else {
+      res.status(200).send(dat);
+    }
+  });
+});
+
+// Delete image by image id
+app.post('/api/ratings/images/delete/:imgId', (req, res) => {
+  const imgId = Number(req.params.imgId);
+
+  db.deleteImage(imgId, (err, dat) => {
+    if (err) {
+      res.status(401).send(err);
+    } else {
+      res.status(200).send(dat);
+    }
+  });
+});
+// =============================
 
 app.get('/api/ratings/products', (req, res) => {
   getOne((error, result) => {
