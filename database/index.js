@@ -12,6 +12,19 @@ const connection = mysql.createConnection({
 
 connection.connect();
 
+// =========== IMAGES ==========
+// create an image
+const createImage = (prodId, imgLoc, callback) => {
+  connection.query('INSERT INTO images (prod_id, loc) VALUES (?, ?)', [prodId, imgLoc], (err, res) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(res);
+    }
+  });
+};
+
+// reads all images
 const fetchImages = (prodId, callback) => {
   console.log('the prodId: ' + prodId);
   const imageQuery = `SELECT loc FROM images WHERE prod_id=${prodId};`;
@@ -25,6 +38,31 @@ const fetchImages = (prodId, callback) => {
     callback(null, result);
   });
 };
+
+// Update image product id, or location, based on image id.
+const updateImage = (imgId, prodId, imgLoc, callback) => {
+  connection.query('UPDATE images SET prod_id = ?, loc = ? VALUES (?, ?) WHERE id = ?', [prodId, imgLoc, imgId], (err, res) => {
+    if (err) {
+      callback(err, null);
+      return;
+    } else {
+      callback(res);
+    }
+  });
+};
+
+// Delete image by image id
+const deleteImage = (imgId, callback) => {
+  connection.query('DELETE FROM images WHERE id = ?', [imgId], (err, res) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, res);
+    }
+  });
+};
+
+// =================================================================
 
 const fetchUser = (userid, callback) => {
   connection.query(`SELECT * FROM users(username) WHERE id=${userid};`, (error, result) => {
@@ -84,27 +122,6 @@ const createUser = (data, callback) => {
     callback(null, result);
   });
 };
-
-// id int AUTO_INCREMENT PRIMARY KEY NOT NULL,
-//   userid int,
-//   star_rating tinyint,
-//   helpfulness_score tinyint,
-//   image_id int,
-//   FOREIGN KEY (userid) REFERENCES users(id),
-//   FOREIGN KEY (image_id) REFERENCES images(id)
-
-// think back to databases sprint for more info on promises and how to return them
-// create a new promise that
-// resolve the promise, and then you can chain into then
-// const getAll = (callback) => {
-//   connection.query('SELECT * FROM products', (error, result) => {
-//     if (error) {
-//       console.error(error);
-//       return;
-//     }
-//     callback(null, result);
-//   });
-// };
 
 // module export those functions
 module.exports = {
