@@ -7,12 +7,6 @@
 
 const express = require('express');
 const bodyParser = require('body-parser');
-const getOne = require('../database/index.js').getOne;
-const getReviews = require('../database/index.js').getReviews;
-const postReview = require('../database/index.js').postReview;
-const fetchUser = require('../database/index.js').fetchUser;
-const fetchImages = require('../database/index.js').fetchImages;
-
 const db = require('../database/index.js');
 
 const app = express();
@@ -39,7 +33,7 @@ app.post('/api/ratings/images/insert/:prodId', (req, res) => {
 app.get('/api/ratings/images/:prodId', (req, res) => {
   // console.log('HERE IS REQS HEADERS: ' + JSON.stringify(req.headers));
   //console.log('the params on req: ' + JSON.stringify(req.params));
-  fetchImages(req.params.prodId, (error, result) => {
+  db.fetchImages(req.params.prodId, (error, result) => {
     if (error) {
       console.error(error);
       return;
@@ -77,62 +71,9 @@ app.post('/api/ratings/images/delete/:imgId', (req, res) => {
   });
 });
 // =============================
-// =========== Users ===========
-// add user
-app.post('/api/ratings/users/insert', (req, res) => {
-  const uname = String(req.query.name);
-
-  db.createUser(uname, (err, dat) => {
-    if (err) {
-      res.status(401).send(err);
-    } else {
-      res.status(200).send(dat);
-    }
-  });
-});
-
-// get a user
-app.get('/api/ratings/users/:uId', (req, res) => {
-  const uid = Number(req.params.uId);
-  db.fetchUser(uid, (err, dat) => {
-    if (err) {
-      res.status(401).send(err);
-    } else {
-      res.status(200).send(dat);
-    }
-  });
-});
-
-// update a user
-app.post('/api/ratings/users/update/:uId', (req, res) => {
-  const uid = Number(req.params.uId);
-  const uname = String(req.query.name);
-
-  db.updateUser(uid, uname, (err, dat) => {
-    if (err) {
-      res.status(401).send(err);
-    } else {
-      res.status(200).send(dat);
-    }
-  });
-});
-
-// delete a user
-app.post('/api/ratings/users/delete/:uId', (req, res) => {
-  const uid = String(req.params.uId);
-
-  db.deleteUser(uid, (err, dat) => {
-    if (err) {
-      res.status(401).send(err);
-    } else {
-      res.status(200).send(dat);
-    }
-  });
-});
-// =============================
 
 app.get('/api/ratings/reviews', (req, res) => {
-  getReviews((error, result) => {
+  db.getReviews((error, result) => {
     if (error) {
       console.error(error);
       return;
@@ -143,7 +84,7 @@ app.get('/api/ratings/reviews', (req, res) => {
 });
 
 app.post('/api/ratings/reviews', (req, res) => {
-  postReview((error, result) => {
+  db.postReview((error, result) => {
     if (error) {
       console.error(error);
       return;
@@ -151,8 +92,6 @@ app.post('/api/ratings/reviews', (req, res) => {
     res.status(200).send(result);
   });
 });
-
-
 
 var port = 4444;
 
