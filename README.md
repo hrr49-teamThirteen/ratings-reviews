@@ -39,16 +39,17 @@ npm install
 
 ## Endpoints:
 ### /api/ratings/images/insert/:prodId/?loc=’path’
-#### Insert an image
-#### prodId=product id, loc=image path
+Insert an image
+prodId=product id, loc=image path
 
 ### /api/ratings/images/:prodId
-#### Returns a list of images for a product id
+Returns a list of images for a product id
+prodId=product id
 
 ### /api/ratings/images/update/:imgId/:prodId?loc=’path’
-#### Update an image
-#### imgId=image id, prodId=product id, loc=image path
+Update an image
+imgId=image id, prodId=product id, loc=image path
 
 ### /api/ratings/images/delete/:imgId
-#### Delete an image
-#### imgId=image id
+Delete an image
+imgId=image id
