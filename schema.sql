@@ -31,7 +31,8 @@ CREATE TABLE reviews (
   datePosted datetime NOT NULL,
   username varchar(100),
   body varchar(1000),
-  star_rating tinyint/*,
+  star_rating tinyint,
+  prod_id int/*,
   helpfulness_score tinyint,
   image_path varchar(250)*/
 );

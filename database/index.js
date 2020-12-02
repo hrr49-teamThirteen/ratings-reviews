@@ -63,13 +63,14 @@ const deleteImage = (imgId, callback) => {
 };
 
 // =========== REVIEWS (done) ==========
-const postReview = (data, callback) => {
-  connection.query(`INSERT INTO reviews (userid, body, star_rating, helpfulness_score) VALUES(${data.userid}, ${data.body}, ${data.star_rating}, 0);`, (error, result) => {
-    if (error) {
-      console.error(error);
-      return;
+const postReview = (title, date = new Date(), uname, body, starRating, prodId, callback) => {
+  console.log([...arguments]);
+  connection.query('INSERT INTO reviews (title, datePosted, username, body, star_rating, prod_id) VALUES (?, ?, ?, ?, ?, ?);', [title, date, uname, body, starRating, prodId], (err, res) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, res);
     }
-    callback(null, result);
   });
 };
 
@@ -91,7 +92,7 @@ const getReviews = (callback) => {
   });
 };
 
-const updateReview = (callback, reviewId, reviewTitle, reviewUname, reviewBody, reviewSRating = 0, reviewHScore = 0, reviewImgPath = 'NULL', reviewDate = 'NOW()') => {
+const updateReview = (callback, reviewId, reviewTitle, reviewUname, reviewBody, reviewSRating = 0, reviewHScore = 0, reviewImgPath = 'NULL', reviewDate = new Date()) => {
   connection.query('UPDATE reviews SET title = ?, datePosted = ?, username = ?, body = ?, star_rating = ?, helpfulness_score = ?, image_path = ? WHERE id = ?',
   [reviewTitle, reviewDate, reviewUname, reviewBody, reviewSRating, reviewHScore, reviewImgPath, reviewId],
   (err, res) => {
@@ -123,15 +124,6 @@ module.exports = {
   fetchImages,
   updateImage,
   deleteImage,
-  createUser,
-  fetchUser,
-  updateUser,
-  deleteUser,
-  createProduct,
-  getProduct,
-  updateProduct,
-  deleteProduct,
-  getOne,
   postReview,
   getReviews,
   updateReview,

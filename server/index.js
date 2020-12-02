@@ -1,9 +1,4 @@
-// refactor to go to /api/endpoint
-
-// GAME PLAN FOR TODAY AND TOMORROW
-// MIGHT BE WORTH IT TO CREATE A HARD CODED VERSION WITH PRODID1, AND I CAN PASS THAT TO MY TEAM
-// SPEND TWO THIRDS OF A DAY GETTING TESTS GOING
-// don't forget to email communications
+const port = 4444;
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -31,14 +26,11 @@ app.post('/api/ratings/images/insert/:prodId', (req, res) => {
 
 // return images for a product. originally: /api/ratings/:prodId/images
 app.get('/api/ratings/images/:prodId', (req, res) => {
-  // console.log('HERE IS REQS HEADERS: ' + JSON.stringify(req.headers));
-  //console.log('the params on req: ' + JSON.stringify(req.params));
   db.fetchImages(req.params.prodId, (error, result) => {
     if (error) {
       console.error(error);
       return;
     }
-    //console.log('this is the result of the image api: ' + result);
     res.status(200).send(result);
   });
 });
@@ -71,29 +63,67 @@ app.post('/api/ratings/images/delete/:imgId', (req, res) => {
   });
 });
 // =============================
+// ========== REVIEWS ==========
+// add review
+app.post('/api/ratings/reviews/insert/:pId', (req, res) => {
+  const productId = Number(req.params.pId);
+  const uname = String(req.query.name);
+  const title = String(req.query.title);
+  const date = req.query.date;
+  const body = String(req.query.body);
+  const starRating = Number(req.query.rating);
 
+  db.postReview(title, date, uname, body, starRating, productId, (err, dat) => {
+    if (err) {
+      res.status(401).send(err);
+    } else {
+      res.status(200).send(dat);
+    }
+  });
+});
+
+// get reviews
 app.get('/api/ratings/reviews', (req, res) => {
-  db.getReviews((error, result) => {
-    if (error) {
-      console.error(error);
-      return;
+  db.getReviews((err, dat) => {
+    if (err) {
+      res.status(401).send(err);
+    } else {
+      res.status(200).send(dat);
     }
-
-    res.status(200).send(result);
   });
 });
 
-app.post('/api/ratings/reviews', (req, res) => {
-  db.postReview((error, result) => {
-    if (error) {
-      console.error(error);
-      return;
+// gets a single review
+app.get('/api/ratings/reviews/:rId', (req, res) => {
+  const reviewId = Number(req.params.rId);
+
+  db.getReviews(reviewId, (err, dat) => {
+    if (err) {
+      res.status(401).send(err);
+    } else {
+      res.status(200).send(dat);
     }
-    res.status(200).send(result);
   });
 });
 
-var port = 4444;
+// update a review
+app.post('/api/ratings/reviews/update/:rId', (req, res) => {
+  const reviewId = Number(req.params.rId);
+  const productId = Number(req.query.pId);
+  const uname = String(req.query.name);
+  const title = String(req.query.title);
+  const date = req.query.date;
+  const body = String(req.query.body);
+  const starRating = Number(req.query.rating);
+
+});
+
+// delete a review
+app.post('/api/ratings/reviews/delete/:rId', (req, res) => {
+
+});
+
+// =============================
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}...`);
