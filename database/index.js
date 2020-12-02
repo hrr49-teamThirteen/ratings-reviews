@@ -12,7 +12,7 @@ const connection = mysql.createConnection({
 
 connection.connect();
 
-// =========== IMAGES ==========
+// =========== IMAGES (done) ==========
 // create an image
 const createImage = (prodId, imgLoc, callback) => {
   connection.query('INSERT INTO images (prod_id, loc) VALUES (?, ?)', [prodId, imgLoc], (err, res) => {
@@ -41,7 +41,7 @@ const fetchImages = (prodId, callback) => {
 
 // Update image product id, or location, based on image id.
 const updateImage = (imgId, prodId, imgLoc, callback) => {
-  connection.query('UPDATE images SET prod_id = ?, loc = ? VALUES (?, ?) WHERE id = ?', [prodId, imgLoc, imgId], (err, res) => {
+  connection.query('UPDATE images SET prod_id = ?, loc = ? WHERE id = ?', [prodId, imgLoc, imgId], (err, res) => {
     if (err) {
       callback(err, null);
       return;
@@ -62,10 +62,9 @@ const deleteImage = (imgId, callback) => {
   });
 };
 
-// =================================================================
-
-const fetchUser = (userid, callback) => {
-  connection.query(`SELECT * FROM users(username) WHERE id=${userid};`, (error, result) => {
+// =========== USERS (done) ==========
+const createUser = (data, callback) => {
+  connection.query('INSERT INTO users (username) VALUES(?);', [data.username], (error, result) => {
     if (error) {
       console.error(error);
       return;
@@ -74,6 +73,80 @@ const fetchUser = (userid, callback) => {
   });
 };
 
+const fetchUser = (userid, callback) => {
+  connection.query('SELECT * FROM users (username) WHERE id = ?;' [userid], (error, result) => {
+    if (error) {
+      console.error(error);
+      return;
+    }
+    callback(null, result);
+  });
+};
+
+const updateUser = (userId, userName, callback) => {
+  connection.query('UPDATE users SET username = ? WHERE id = ?;', [userId, userName], (err, res) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, res);
+    }
+  });
+};
+
+const deleteUser = (userId, callback) => {
+  connection.query('DELETE FROM users WHERE id = ?;', [userId], (err, res) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, res);
+    }
+  });
+};
+
+// =========== PRODUCTS (done) ==========
+const createProduct = (productName, productDpt, callback) => {
+  connection.query('INSERT INTO products (product_name, department) VALUES (?, ?)', [productName, productDpt], (err, res) => {
+    if (err) {
+      callback(err, null);
+      return;
+    } else {
+      callback(null, res);
+    }
+  });
+};
+
+const getProduct = (id, callback) => {
+  connection.query('SELECT * FROM products WHERE id = ?;', [id], (err, res) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, res);
+    }
+  });
+};
+
+const updateProduct = (productId, productName, productDpt, callback) => {
+  connection.query('UPDATE products SET product_name = ?, department = ? WHERE id = ?', [productId, productDpt, productId], (err, res) => {
+    if (err) {
+      callback(err, null);
+      return;
+    } else {
+      callback(null, res);
+    }
+  });
+};
+
+const deleteProduct = (productId, callback) => {
+  connection.query('DELETE FROM images WHERE id = ?', [productId], (err, res) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, res);
+    }
+  });
+};
+
+// just returns a random product, and shouldn't be used. front-end currently reliant on it.
 const getOne = (callback) => {
   connection.query('SELECT * FROM products ORDER BY RAND() LIMIT 1;', (error, result) => {
     if (error) {
@@ -85,6 +158,7 @@ const getOne = (callback) => {
   });
 };
 
+// =========== REVIEWS ==========
 const getReviews = (callback) => {
   connection.query('SELECT * FROM reviews;', (error, result) => {
     if (error) {
@@ -113,15 +187,7 @@ const postReview = (data, callback) => {
   });
 };
 
-const createUser = (data, callback) => {
-  connection.query(`INSERT INTO users (username) VALUES(${data.username});`, (error, result) => {
-    if (error) {
-      console.error(error);
-      return;
-    }
-    callback(null, result);
-  });
-};
+
 
 // module export those functions
 module.exports = {
