@@ -8,10 +8,10 @@ CREATE TABLE products (
   department varchar(50)
 );
 
-CREATE TABLE rateable_attributes (
+/*CREATE TABLE rateable_attributes (
   id int AUTO_INCREMENT PRIMARY KEY NOT NULL,
   attributeName varchar(50)
-);
+);*/
 
 CREATE TABLE users (
   id int AUTO_INCREMENT PRIMARY KEY NOT NULL,

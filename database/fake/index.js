@@ -44,10 +44,10 @@ const seedFakeData = async function (n) {
     // shouldn't a six star review be technically possible? how do i fix?
     await connection.query(queryString, params);
   }
-  for (let attribute of dataSeed.attributes) {
+  /*for (let attribute of dataSeed.attributes) {
     let queryString = 'INSERT INTO rateable_attributes (attributeName) VALUES (?);';
     await connection.query(queryString, [attribute]);
-  }
+  }*/
   for (let user of dataSeed.users) {
     let queryString = 'INSERT INTO users (username) VALUES (?);';
     await connection.query(queryString, [user]);
