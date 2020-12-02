@@ -13,7 +13,7 @@ const connection = mysql.createConnection({
 connection.connect();
 
 // =========== IMAGES (done) ==========
-// create an image
+// add image
 const createImage = (prodId, imgLoc, callback) => {
   connection.query('INSERT INTO images (prod_id, loc) VALUES (?, ?)', [prodId, imgLoc], (err, res) => {
     if (err) {
@@ -26,15 +26,15 @@ const createImage = (prodId, imgLoc, callback) => {
 
 // reads all images
 const fetchImages = (prodId, callback) => {
-  console.log('the prodId: ' + prodId);
+  //console.log('the prodId: ' + prodId);
   const imageQuery = `SELECT loc FROM images WHERE prod_id=${prodId};`;
-  console.log('IMAGE QUERY: ' + imageQuery);
+  //console.log('IMAGE QUERY: ' + imageQuery);
   connection.query(`SELECT loc FROM images WHERE prod_id=${prodId};`, (error, result) => {
     if (error) {
       console.error(error);
       return;
     }
-    console.log('RESULT OF FETCHING IMAGE: ' + result);
+    //console.log('RESULT OF FETCHING IMAGE: ' + result);
     callback(null, result);
   });
 };
@@ -63,28 +63,28 @@ const deleteImage = (imgId, callback) => {
 };
 
 // =========== USERS (done) ==========
-const createUser = (data, callback) => {
-  connection.query('INSERT INTO users (username) VALUES(?);', [data.username], (error, result) => {
-    if (error) {
-      console.error(error);
-      return;
+const createUser = (uname, callback) => {
+  connection.query('INSERT INTO users (username) VALUES(?);', [uname], (err, res) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, res);
     }
-    callback(null, result);
   });
 };
 
-const fetchUser = (userid, callback) => {
-  connection.query('SELECT * FROM users (username) WHERE id = ?;' [userid], (error, result) => {
-    if (error) {
-      console.error(error);
-      return;
+const fetchUser = (uid, callback) => {
+  connection.query('SELECT * FROM users WHERE id = ?;', [uid], (err, res) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, res);
     }
-    callback(null, result);
   });
 };
 
 const updateUser = (userId, userName, callback) => {
-  connection.query('UPDATE users SET username = ? WHERE id = ?;', [userId, userName], (err, res) => {
+  connection.query('UPDATE users SET username = ? WHERE id = ?;', [userName, userId], (err, res) => {
     if (err) {
       callback(err, null);
     } else {
@@ -153,7 +153,7 @@ const getOne = (callback) => {
       console.error(error);
       return;
     }
-    console.log('THE PRODUCT THAT CAME BACK: ' + JSON.stringify(result));
+    //('THE PRODUCT THAT CAME BACK: ' + JSON.stringify(result));
     callback(null, result);
   });
 };
@@ -182,7 +182,7 @@ const getReviews = (callback) => {
         });
       }
     }
-    console.log('This is the result after username processing:' + JSON.stringify(result));
+    //console.log('This is the result after username processing:' + JSON.stringify(result));
     callback(null, result);
   });
 };

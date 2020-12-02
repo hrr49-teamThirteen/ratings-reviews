@@ -38,13 +38,13 @@ app.post('/api/ratings/images/insert/:prodId', (req, res) => {
 // return images for a product. originally: /api/ratings/:prodId/images
 app.get('/api/ratings/images/:prodId', (req, res) => {
   // console.log('HERE IS REQS HEADERS: ' + JSON.stringify(req.headers));
-  console.log('the params on req: ' + JSON.stringify(req.params));
+  //console.log('the params on req: ' + JSON.stringify(req.params));
   fetchImages(req.params.prodId, (error, result) => {
     if (error) {
       console.error(error);
       return;
     }
-    console.log('this is the result of the image api: ' + result);
+    //console.log('this is the result of the image api: ' + result);
     res.status(200).send(result);
   });
 });
@@ -77,7 +77,59 @@ app.post('/api/ratings/images/delete/:imgId', (req, res) => {
   });
 });
 // =============================
+// =========== Users ===========
+// add user
+app.post('/api/ratings/users/insert', (req, res) => {
+  const uname = String(req.query.name);
 
+  db.createUser(uname, (err, dat) => {
+    if (err) {
+      res.status(401).send(err);
+    } else {
+      res.status(200).send(dat);
+    }
+  });
+});
+
+// get a user
+app.get('/api/ratings/users/:uId', (req, res) => {
+  const uid = Number(req.params.uId);
+  db.fetchUser(uid, (err, dat) => {
+    if (err) {
+      res.status(401).send(err);
+    } else {
+      res.status(200).send(dat);
+    }
+  });
+});
+
+// update a user
+app.post('/api/ratings/users/update/:uId', (req, res) => {
+  const uid = Number(req.params.uId);
+  const uname = String(req.query.name);
+
+  db.updateUser(uid, uname, (err, dat) => {
+    if (err) {
+      res.status(401).send(err);
+    } else {
+      res.status(200).send(dat);
+    }
+  });
+});
+
+// delete a user
+app.post('/api/ratings/users/delete/:uId', (req, res) => {
+  const uid = String(req.params.uId);
+
+  db.deleteUser(uid, (err, dat) => {
+    if (err) {
+      res.status(401).send(err);
+    } else {
+      res.status(200).send(dat);
+    }
+  });
+});
+// =============================
 app.get('/api/ratings/products', (req, res) => {
   getOne((error, result) => {
     if (error) {
@@ -109,17 +161,7 @@ app.post('/api/ratings/reviews', (req, res) => {
   });
 });
 
-app.get('/api/ratings/users', (req, res) => { // PASS IN THE USERID HERE SOMEHOW
-  console.log('THIS IS REQS DATA: ' + req.data);
-  fetchUser(req.data.userid, (error, result) => { // PASS IT IN ON THIS LINE DUDE
-    if (error) {
-      console.error(error);
-      return;
-    }
-    console.log('HEY LOOK');
-    res.status(200).send(result);
-  });
-});
+
 
 var port = 4444;
 

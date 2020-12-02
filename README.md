@@ -61,3 +61,25 @@ npm install
 ##### Delete an image
 ##### Params:
 - imgId = image id
+
+### Users:
+#### /api/ratings/users/insert?name='username'
+##### Insert a user
+##### Params:
+- name = the username
+
+#### /api/ratings/users/:uId
+##### Get a user's information
+##### Params:
+- uId = the id of the user
+
+#### /api/ratings/users/update/:uId?name='username'
+##### Update a user's information
+##### Params:
+- uId = the id of the user
+- name = the username
+
+#### /api/ratings/users/delete/:uId
+##### Delete a user
+##### Params:
+- uId = the id of the user

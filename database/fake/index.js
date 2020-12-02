@@ -38,9 +38,9 @@ const seedFakeData = async function (n) {
     i++;
   }
   for (let review of dataSeed.reviews) {
-    let queryString = 'INSERT INTO reviews (body, helpfulness_score, datePosted, username, title, star_rating) VALUES(?, ?, ?, ?, ?, ?);';
-    console.log('HERES REVIEW ITSELF: ' + review);
-    let params = [review.body, 0, review.datePosted, review.username, review.title, Math.floor(Math.random() * 5) + 1];
+    let queryString = 'INSERT INTO reviews (body, datePosted, username, title, star_rating) VALUES(?, ?, ?, ?, ?);';
+    //console.log('HERES REVIEW ITSELF: ' + review);
+    let params = [review.body, review.datePosted, review.username, review.title, Math.floor(Math.random() * 5) + 1];
     // shouldn't a six star review be technically possible? how do i fix?
     await connection.query(queryString, params);
   }
@@ -48,10 +48,10 @@ const seedFakeData = async function (n) {
     let queryString = 'INSERT INTO rateable_attributes (attributeName) VALUES (?);';
     await connection.query(queryString, [attribute]);
   }*/
-  for (let user of dataSeed.users) {
+  /*for (let user of dataSeed.users) {
     let queryString = 'INSERT INTO users (username) VALUES (?);';
     await connection.query(queryString, [user]);
-  }
+  }*/
   connection.end();
 };
 
