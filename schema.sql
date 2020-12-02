@@ -1,3 +1,7 @@
+DROP DATABASE IF EXISTS reviewsDB;
+CREATE DATABASE reviewsDB;
+USE reviewsDB;
+
 CREATE TABLE products (
   id int AUTO_INCREMENT PRIMARY KEY NOT NULL,
   product_name varchar(120),
@@ -17,8 +21,8 @@ CREATE TABLE users (
 CREATE TABLE images (
   id int AUTO_INCREMENT PRIMARY KEY NOT NULL,
   prod_id int,
-  loc varchar(250),
-  FOREIGN KEY (prod_id) REFERENCES products(id)
+  loc varchar(250)/*,
+  FOREIGN KEY (prod_id) REFERENCES products(id)*/
 );
 
 CREATE TABLE reviews (

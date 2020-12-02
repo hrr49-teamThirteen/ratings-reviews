@@ -37,3 +37,21 @@ npm install -g webpack
 npm install
 ```
 
+## Endpoints:
+### /api/ratings/:prodId/images
+GET:
+
+### /api/ratings/products
+GET:
+
+### /api/ratings/reviews
+GET:
+
+### /api/ratings/reviews
+POST:
+Calls function postReview()
+
+### /api/ratings/users
+GET:
+Params: Req.data.userid
+Calls function: fetchUser()
