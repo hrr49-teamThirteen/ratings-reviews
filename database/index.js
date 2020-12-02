@@ -187,12 +187,26 @@ const getReviews = (callback) => {
   });
 };
 
-const updateReview = () => {
-
+const updateReview = (reviewId, reviewTitle, reviewUname, reviewBody, reviewSRating = 0, reviewHScore = 0, reviewImgPath = 'NULL', callback) => {
+  connection.query('UPDATE reviews SET title = ?, datePosted = NULL, username = ?, body = ?, star_rating = ?, helpfulness_score = ?, image_path = ? WHERE id = ?',
+  [reviewTitle, reviewUname, reviewBody, reviewSRating, reviewHScore, reviewImgPath, reviewId],
+  (err, res) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, res);
+    }
+  });
 };
 
-const deleteReview = () => {
-
+const deleteReview = (reviewId, callback) => {
+  connection.query('DELETE FROM reviews WHERE id = ?', [reviewId], (err, res) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, err);
+    }
+  });
 };
 
 
