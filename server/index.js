@@ -76,16 +76,6 @@ app.get('/api/ratings/users', (req, res) => { // PASS IN THE USERID HERE SOMEHOW
   });
 });
 
-// app.get('/products', (req, res) => {
-//   getAll((error, result) => {
-//     if (error) {
-//       console.error(error);
-//       return;
-//     }
-//     res.status(200).send(result);
-//   });
-// });
-
 var port = 4444;
 
 app.listen(port, () => {
