@@ -130,15 +130,6 @@ app.post('/api/ratings/users/delete/:uId', (req, res) => {
   });
 });
 // =============================
-app.get('/api/ratings/products', (req, res) => {
-  getOne((error, result) => {
-    if (error) {
-      console.error(error);
-      return;
-    }
-    res.status(200).send(result);
-  });
-});
 
 app.get('/api/ratings/reviews', (req, res) => {
   getReviews((error, result) => {

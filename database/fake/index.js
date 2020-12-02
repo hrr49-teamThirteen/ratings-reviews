@@ -21,11 +21,11 @@ connection.connect((err) => {
 const seedFakeData = async function (n) {
   const dataSeed = fakeData(n);
   console.log('HERES THE DATASEED: ' + JSON.stringify(dataSeed));
-  for (let product of dataSeed.products) {
+  /*for (let product of dataSeed.products) {
     let queryString = 'INSERT INTO products (product_name, department) VALUES(?, ?);';
     let params = [product.productName, product.productImage, product.department];
     await connection.query(queryString, params);
-  }
+  }*/
   var i = 4;
   for (let image of dataSeed.images) { // currently, 1 image per product. considerably more per product and a fairly even by variable distribution is eventual goal
     let queryString = 'INSERT INTO images (prod_id, loc) VALUES (?, ?);';
