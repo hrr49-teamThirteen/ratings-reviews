@@ -159,6 +159,16 @@ const getOne = (callback) => {
 };
 
 // =========== REVIEWS ==========
+const postReview = (data, callback) => {
+  connection.query(`INSERT INTO reviews (userid, body, star_rating, helpfulness_score) VALUES(${data.userid}, ${data.body}, ${data.star_rating}, 0);`, (error, result) => {
+    if (error) {
+      console.error(error);
+      return;
+    }
+    callback(null, result);
+  });
+};
+
 const getReviews = (callback) => {
   connection.query('SELECT * FROM reviews;', (error, result) => {
     if (error) {
@@ -177,24 +187,32 @@ const getReviews = (callback) => {
   });
 };
 
-const postReview = (data, callback) => {
-  connection.query(`INSERT INTO reviews (userid, body, star_rating, helpfulness_score) VALUES(${data.userid}, ${data.body}, ${data.star_rating}, 0);`, (error, result) => {
-    if (error) {
-      console.error(error);
-      return;
-    }
-    callback(null, result);
-  });
+const updateReview = () => {
+
 };
 
+const deleteReview = () => {
+
+};
 
 
 // module export those functions
 module.exports = {
-  getOne,
-  getReviews,
-  postReview,
+  createImage,
+  fetchImages,
+  updateImage,
+  deleteImage,
   createUser,
   fetchUser,
-  fetchImages
+  updateUser,
+  deleteUser,
+  createProduct,
+  getProduct,
+  updateProduct,
+  deleteProduct,
+  getOne,
+  postReview,
+  getReviews,
+  updateReview,
+  deleteReview
 };
