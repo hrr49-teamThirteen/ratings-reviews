@@ -158,7 +158,7 @@ const getOne = (callback) => {
   });
 };
 
-// =========== REVIEWS ==========
+// =========== REVIEWS (done) ==========
 const postReview = (data, callback) => {
   connection.query(`INSERT INTO reviews (userid, body, star_rating, helpfulness_score) VALUES(${data.userid}, ${data.body}, ${data.star_rating}, 0);`, (error, result) => {
     if (error) {
@@ -208,6 +208,9 @@ const deleteReview = (reviewId, callback) => {
     }
   });
 };
+
+// =========== REVIEWS (done) ==========
+
 
 
 // module export those functions
