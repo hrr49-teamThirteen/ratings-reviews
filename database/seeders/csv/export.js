@@ -22,7 +22,6 @@ const productsWriteStream = fs.createWriteStream(`${baseCsvDir}products.csv`);
 (async() => {
   for(let i = 0; i < productCount; i++) {
       if(!productsWriteStream.write(getProductsRow())) {
-          // Will pause every 16384 iterations until `drain` is emitted
           await new Promise(resolve => productsWriteStream.once('drain', resolve));
       }
   }
@@ -38,7 +37,6 @@ const productsWriteStream = fs.createWriteStream(`${baseCsvDir}products.csv`);
   (async() => {
     for(let i = 0; i < productCount; i++) {
         if(!usersWriteStream.write(getUsersRow())) {
-            // Will pause every 16384 iterations until `drain` is emitted
             await new Promise(resolve => usersWriteStream.once('drain', resolve));
         }
     }
@@ -78,7 +76,6 @@ const productsWriteStream = fs.createWriteStream(`${baseCsvDir}products.csv`);
         console.log(`Generating ${reviewsCount} reviews to ${baseCsvDir}reviews.csv\nThis will take a long time...`);
         for(let i = 0; i < productCount; i++) {
             if(!reviewsWriteStream.write(getReviewsRow())) {
-                // Will pause every 16384 iterations until `drain` is emitted
                 await new Promise(resolve => reviewsWriteStream.once('drain', resolve));
             }
         }
