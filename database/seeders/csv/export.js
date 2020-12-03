@@ -13,7 +13,7 @@ function getRandomIntRange(lo, hi) {
 }
 
 // Generate products.csv
-console.log(`Generating ${productCount} products to products.csv`);
+console.log(`Generating ${productCount} products to ${baseCsvDir}products.csv`);
 function getProductsRow() {
   return `${faker.commerce.productName()}\n`;
 }
@@ -29,7 +29,7 @@ const productsWriteStream = fs.createWriteStream(`${baseCsvDir}products.csv`);
   productsWriteStream.close();
 
   // Generate users.csv
-  console.log(`Generating ${usersCount} users to users.csv`);
+  console.log(`Generating ${usersCount} users to ${baseCsvDir}users.csv`);
   function getUsersRow() {
     return `${faker.internet.userName()}\n`;
   }
@@ -50,7 +50,7 @@ const productsWriteStream = fs.createWriteStream(`${baseCsvDir}products.csv`);
     }
 
     const imagesWriteStream = fs.createWriteStream(`${baseCsvDir}images.csv`);
-    console.log(`Generating ${imageCount} images to images.csv`);
+    console.log(`Generating ${imageCount} images to ${baseCsvDir}images.csv`);
     (async() => {
       for(let i = 0; i < productCount; i++) {
           if(!imagesWriteStream.write(getImagesRow())) {
@@ -62,19 +62,20 @@ const productsWriteStream = fs.createWriteStream(`${baseCsvDir}products.csv`);
 
       // Generate reviews.csv
       function getReviewsRow() {
-        // title, date, body, rating, userid, prodid
-        // remove commas in fake sentences for csv
-        return `${faker.lorem.sentence().replace(/,/g, '')},
-        ${faker.date.soon(90)},
-        ${faker.lorem.sentences(getRandomIntRange(1, 5)).replace(/,/g, '')},
-        ${getRandomIntRange(1, 5)},
-        ${getRandomIntRange(0, usersCount)},
-        ${getRandomIntRange(0, productCount)}\n`;
+        // title, date, body, rating, user_id, prod_id
+        const title = faker.lorem.sentence().replace(/,/g, ''); // remove commas in fake sentences for csv
+        const date = faker.date.soon(90);
+        const body = faker.lorem.sentences(getRandomIntRange(1, 5)).replace(/,/g, '');
+        const rating = getRandomIntRange(1, 5);
+        const uid = getRandomIntRange(0, usersCount);
+        const pid = getRandomIntRange(0, productCount);
+
+        return `${title},${date},${body},${rating},${uid},${pid}\n`;
       }
 
       const reviewsWriteStream = fs.createWriteStream(`${baseCsvDir}reviews.csv`);
       (async() => {
-        console.log(`Generating ${reviewsCount} reviews to reviews.csv\nThis will take a long time...`);
+        console.log(`Generating ${reviewsCount} reviews to ${baseCsvDir}reviews.csv\nThis will take a long time...`);
         for(let i = 0; i < productCount; i++) {
             if(!reviewsWriteStream.write(getReviewsRow())) {
                 // Will pause every 16384 iterations until `drain` is emitted
