@@ -12,38 +12,65 @@ const connection = mysql.createConnection({
 
 connection.connect();
 
+// =========== IMAGES (done) ==========
+// add image
+const createImage = (prodId, imgLoc, callback) => {
+  connection.query('INSERT INTO images (prod_id, loc) VALUES (?, ?)', [prodId, imgLoc], (err, res) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(res);
+    }
+  });
+};
+
+// reads all images
 const fetchImages = (prodId, callback) => {
-  console.log('the prodId: ' + prodId);
+  //console.log('the prodId: ' + prodId);
   const imageQuery = `SELECT loc FROM images WHERE prod_id=${prodId};`;
-  console.log('IMAGE QUERY: ' + imageQuery);
+  //console.log('IMAGE QUERY: ' + imageQuery);
   connection.query(`SELECT loc FROM images WHERE prod_id=${prodId};`, (error, result) => {
     if (error) {
       console.error(error);
       return;
     }
-    console.log('RESULT OF FETCHING IMAGE: ' + result);
+    //console.log('RESULT OF FETCHING IMAGE: ' + result);
     callback(null, result);
   });
 };
 
-const fetchUser = (userid, callback) => {
-  connection.query(`SELECT * FROM users(username) WHERE id=${userid};`, (error, result) => {
-    if (error) {
-      console.error(error);
+// Update image product id, or location, based on image id.
+const updateImage = (imgId, prodId, imgLoc, callback) => {
+  connection.query('UPDATE images SET prod_id = ?, loc = ? WHERE id = ?', [prodId, imgLoc, imgId], (err, res) => {
+    if (err) {
+      callback(err, null);
       return;
+    } else {
+      callback(res);
     }
-    callback(null, result);
   });
 };
 
-const getOne = (callback) => {
-  connection.query('SELECT * FROM products ORDER BY RAND() LIMIT 1;', (error, result) => {
-    if (error) {
-      console.error(error);
-      return;
+// Delete image by image id
+const deleteImage = (imgId, callback) => {
+  connection.query('DELETE FROM images WHERE id = ?', [imgId], (err, res) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, res);
     }
-    console.log('THE PRODUCT THAT CAME BACK: ' + JSON.stringify(result));
-    callback(null, result);
+  });
+};
+
+// =========== REVIEWS (done) ==========
+const postReview = (title, date = new Date(), uname, body, starRating, prodId, callback) => {
+  console.log([...arguments]);
+  connection.query('INSERT INTO reviews (title, datePosted, username, body, star_rating, prod_id) VALUES (?, ?, ?, ?, ?, ?);', [title, date, uname, body, starRating, prodId], (err, res) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, res);
+    }
   });
 };
 
@@ -60,58 +87,56 @@ const getReviews = (callback) => {
         });
       }
     }
-    console.log('This is the result after username processing:' + JSON.stringify(result));
+    //console.log('This is the result after username processing:' + JSON.stringify(result));
     callback(null, result);
   });
 };
 
-const postReview = (data, callback) => {
-  connection.query(`INSERT INTO reviews (userid, body, star_rating, helpfulness_score) VALUES(${data.userid}, ${data.body}, ${data.star_rating}, 0);`, (error, result) => {
-    if (error) {
-      console.error(error);
-      return;
+const getReview = (pid, callback) => {
+  connection.query('SELECT * FROM reviews WHERE prod_id = ?;', [pid], (err, res) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, res);
     }
-    callback(null, result);
   });
 };
 
-const createUser = (data, callback) => {
-  connection.query(`INSERT INTO users (username) VALUES(${data.username});`, (error, result) => {
-    if (error) {
-      console.error(error);
-      return;
+const updateReview = (reviewId, reviewTitle, reviewDate = new Date(), reviewUname, reviewBody, reviewSRating = 0, callback) => {
+  connection.query('UPDATE reviews SET title = ?, datePosted = ?, username = ?, body = ?, star_rating = ?, prod_id = ? WHERE id = ?',
+  [reviewTitle, reviewDate, reviewUname, reviewBody, reviewSRating, reviewId],
+  (err, res) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, res);
     }
-    callback(null, result);
   });
 };
 
-// id int AUTO_INCREMENT PRIMARY KEY NOT NULL,
-//   userid int,
-//   star_rating tinyint,
-//   helpfulness_score tinyint,
-//   image_id int,
-//   FOREIGN KEY (userid) REFERENCES users(id),
-//   FOREIGN KEY (image_id) REFERENCES images(id)
+const deleteReview = (reviewId, callback) => {
+  connection.query('DELETE FROM reviews WHERE id = ?', [reviewId], (err, res) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, err);
+    }
+  });
+};
 
-// think back to databases sprint for more info on promises and how to return them
-// create a new promise that
-// resolve the promise, and then you can chain into then
-// const getAll = (callback) => {
-//   connection.query('SELECT * FROM products', (error, result) => {
-//     if (error) {
-//       console.error(error);
-//       return;
-//     }
-//     callback(null, result);
-//   });
-// };
+// =========== REVIEWS (done) ==========
+
+
 
 // module export those functions
 module.exports = {
-  getOne,
-  getReviews,
+  createImage,
+  fetchImages,
+  updateImage,
+  deleteImage,
   postReview,
-  createUser,
-  fetchUser,
-  fetchImages
+  getReviews,
+  getReview,
+  updateReview,
+  deleteReview
 };
