@@ -58,7 +58,7 @@ app.post('/api/ratings/images/delete/:imgId', (req, res) => {
     if (err) {
       res.status(401).send(err);
     } else {
-      res.status(200).send(dat);
+      res.status(200).send('Success');
     }
   });
 });
@@ -67,7 +67,7 @@ app.post('/api/ratings/images/delete/:imgId', (req, res) => {
 // add review
 app.post('/api/ratings/reviews/insert/:pId', (req, res) => {
   const productId = Number(req.params.pId);
-  const uname = String(req.query.name);
+  const uname = String(req.query.username);
   const title = String(req.query.title);
   const date = req.query.date;
   const body = String(req.query.body);
@@ -82,7 +82,7 @@ app.post('/api/ratings/reviews/insert/:pId', (req, res) => {
   });
 });
 
-// get reviews
+// get reviews. original and shouldnt practically be used
 app.get('/api/ratings/reviews', (req, res) => {
   db.getReviews((err, dat) => {
     if (err) {
@@ -93,11 +93,11 @@ app.get('/api/ratings/reviews', (req, res) => {
   });
 });
 
-// gets a single review
-app.get('/api/ratings/reviews/:rId', (req, res) => {
-  const reviewId = Number(req.params.rId);
+// gets a single review based on product id
+app.get('/api/ratings/reviews/:pId', (req, res) => {
+  const productId = Number(req.params.pId);
 
-  db.getReviews(reviewId, (err, dat) => {
+  db.getReview(productId, (err, dat) => {
     if (err) {
       res.status(401).send(err);
     } else {
@@ -109,18 +109,33 @@ app.get('/api/ratings/reviews/:rId', (req, res) => {
 // update a review
 app.post('/api/ratings/reviews/update/:rId', (req, res) => {
   const reviewId = Number(req.params.rId);
-  const productId = Number(req.query.pId);
-  const uname = String(req.query.name);
   const title = String(req.query.title);
   const date = req.query.date;
+  const uname = String(req.query.name);
   const body = String(req.query.body);
   const starRating = Number(req.query.rating);
+  const productId = Number(req.query.pid);
 
+  db.updateReview(reviewId, title, date, uname, body, starRating, productId, (err, dat) => {
+    if (err) {
+      res.status(401).send(err);
+    } else {
+      res.status(200).send(dat);
+    }
+  });
 });
 
 // delete a review
 app.post('/api/ratings/reviews/delete/:rId', (req, res) => {
+  const reviewId = Number(req.params.rId);
 
+  db.deleteReview(reviewId, (err, dat) => {
+    if (err) {
+      res.status(401).send(err);
+    } else {
+      res.status(200).send('Success');
+    }
+  });
 });
 
 // =============================

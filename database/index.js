@@ -92,9 +92,19 @@ const getReviews = (callback) => {
   });
 };
 
-const updateReview = (callback, reviewId, reviewTitle, reviewUname, reviewBody, reviewSRating = 0, reviewHScore = 0, reviewImgPath = 'NULL', reviewDate = new Date()) => {
-  connection.query('UPDATE reviews SET title = ?, datePosted = ?, username = ?, body = ?, star_rating = ?, helpfulness_score = ?, image_path = ? WHERE id = ?',
-  [reviewTitle, reviewDate, reviewUname, reviewBody, reviewSRating, reviewHScore, reviewImgPath, reviewId],
+const getReview = (pid, callback) => {
+  connection.query('SELECT * FROM reviews WHERE prod_id = ?;', [pid], (err, res) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, res);
+    }
+  });
+};
+
+const updateReview = (reviewId, reviewTitle, reviewDate = new Date(), reviewUname, reviewBody, reviewSRating = 0, callback) => {
+  connection.query('UPDATE reviews SET title = ?, datePosted = ?, username = ?, body = ?, star_rating = ?, prod_id = ? WHERE id = ?',
+  [reviewTitle, reviewDate, reviewUname, reviewBody, reviewSRating, reviewId],
   (err, res) => {
     if (err) {
       callback(err, null);
@@ -126,6 +136,7 @@ module.exports = {
   deleteImage,
   postReview,
   getReviews,
+  getReview,
   updateReview,
   deleteReview
 };
