@@ -192,6 +192,58 @@ app.post('/api/ratings/users/delete/:uId', (req, res) => {
   });
 });
 // =============================
+// ========= Products ==========
+// add a product
+app.post('/api/ratings/products/insert', (req, res) => {
+  const productName = req.query.name;
+  db.createProduct(productName, (err, dat) => {
+    if (err) {
+      res.status(401).send(err);
+    } else {
+      res.status(200).send(dat);
+    }
+  });
+});
+
+// get a product
+app.get('/api/ratings/products/:pId', (req, res) => {
+  const productId = req.params.pId;
+  db.getProduct(productId, (err, dat) => {
+    if (err) {
+      res.status(401).send(err);
+    } else {
+      res.status(200).send(dat);
+    }
+  });
+});
+
+// update a product
+app.post('/api/ratings/products/update/:pId', (req, res) => {
+  const productId = req.params.pId;
+  const productName = req.query.name;
+
+  db.updateProduct(productId, productName, (err, dat) => {
+    if (err) {
+      res.status(401).send(err);
+    } else {
+      res.status(200).send(dat);
+    }
+  });
+});
+
+// delete a product
+app.post('/api/ratings/products/delete/:pId', (req, res) => {
+  const productId = req.params.pId;
+
+  db.deleteProduct(productId, (err, dat) => {
+    if (err) {
+      res.status(401).send(err);
+    } else {
+      res.status(200).send(dat);
+    }
+  });
+});
+// =============================
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}...`);

@@ -118,3 +118,26 @@ npm install
 ##### Delete a user
 ##### Params:
 - uId = userId
+
+### Products:
+#### /api/ratings/products/insert
+##### Adds a product.
+##### Params:
+- name = product name
+
+#### /api/ratings/products/:pId
+##### Retreives a product.
+##### Params:
+- pId = product id
+
+#### /api/ratings/products/update/:pId
+##### Updates a product.
+##### Params:
+- pId = product id
+- name = product name
+
+#### /api/ratings/products/delete/:pId
+##### Deletes a product.
+##### Params:
+- pId = product id
+

@@ -162,8 +162,8 @@ const deleteUser = (userId, callback) => {
 };
 
 // =========== PRODUCTS (done) ==========
-const createProduct = (productName, productDpt, callback) => {
-  connection.query('INSERT INTO products (product_name, department) VALUES (?, ?)', [productName, productDpt], (err, res) => {
+const createProduct = (productName, callback) => {
+  connection.query('INSERT INTO products (product_name) VALUES (?)', [productName], (err, res) => {
     if (err) {
       callback(err, null);
     } else {
