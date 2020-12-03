@@ -1,5 +1,5 @@
-const fs = require('fs');
 const faker = require('faker');
+let fs = require('fs');
 
 const baseCsvDir = './database/seeders/csv/'
 const productCount = 10000000;
