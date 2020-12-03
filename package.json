@@ -12,7 +12,7 @@
     "seed": "node ./database/fake/index.js",
     "build": "webpack --watch -d eval-source-map",
     "test": "jest",
-    "generator": "node ./database/seeders/csv/index.js"
+    "csv-export": "node ./database/seeders/csv/export.js"
   },
   "dependencies": {
     "axios": "^0.21.0",
