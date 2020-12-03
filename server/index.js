@@ -139,6 +139,59 @@ app.post('/api/ratings/reviews/delete/:rId', (req, res) => {
 });
 
 // =============================
+// =========== Users ===========
+// add user
+app.post('/api/ratings/users/insert', (req, res) => {
+  const uname = String(req.query.name);
+
+  db.createUser(uname, (err, dat) => {
+    if (err) {
+      res.status(401).send(err);
+    } else {
+      res.status(200).send(dat);
+    }
+  });
+});
+
+// get a user
+app.get('/api/ratings/users/:uId', (req, res) => {
+  const uid = Number(req.params.uId);
+  db.fetchUser(uid, (err, dat) => {
+    if (err) {
+      res.status(401).send(err);
+    } else {
+      res.status(200).send(dat);
+    }
+  });
+});
+
+// update a user
+app.post('/api/ratings/users/update/:uId', (req, res) => {
+  const uid = Number(req.params.uId);
+  const uname = String(req.query.name);
+
+  db.updateUser(uid, uname, (err, dat) => {
+    if (err) {
+      res.status(401).send(err);
+    } else {
+      res.status(200).send(dat);
+    }
+  });
+});
+
+// delete a user
+app.post('/api/ratings/users/delete/:uId', (req, res) => {
+  const uid = String(req.params.uId);
+
+  db.deleteUser(uid, (err, dat) => {
+    if (err) {
+      res.status(401).send(err);
+    } else {
+      res.status(200).send(dat);
+    }
+  });
+});
+// =============================
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}...`);

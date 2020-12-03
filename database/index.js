@@ -26,16 +26,12 @@ const createImage = (prodId, imgLoc, callback) => {
 
 // reads all images
 const fetchImages = (prodId, callback) => {
-  //console.log('the prodId: ' + prodId);
-  const imageQuery = `SELECT loc FROM images WHERE prod_id=${prodId};`;
-  //console.log('IMAGE QUERY: ' + imageQuery);
-  connection.query(`SELECT loc FROM images WHERE prod_id=${prodId};`, (error, result) => {
-    if (error) {
-      console.error(error);
-      return;
+  connection.query('SELECT loc FROM images WHERE prod_id = ?;', [prodId], (err, res) => {
+    if (err) {
+      callback(res, null);
+    } else {
+      callback(null, res);
     }
-    //console.log('RESULT OF FETCHING IMAGE: ' + result);
-    callback(null, result);
   });
 };
 
@@ -123,9 +119,100 @@ const deleteReview = (reviewId, callback) => {
     }
   });
 };
+// ===================================
+// =========== USERS (done) ==========
+const createUser = (uname, callback) => {
+  connection.query('INSERT INTO users (username) VALUES (?);', [uname], (err, res) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, res);
+    }
+  });
+};
 
-// =========== REVIEWS (done) ==========
+const fetchUser = (uid, callback) => {
+  connection.query('SELECT * FROM users WHERE id = ?;', [uid], (err, res) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, res);
+    }
+  });
+};
 
+const updateUser = (userId, userName, callback) => {
+  connection.query('UPDATE users SET username = ? WHERE id = ?;', [userName, userId], (err, res) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, res);
+    }
+  });
+};
+
+const deleteUser = (userId, callback) => {
+  connection.query('DELETE FROM users WHERE id = ?;', [userId], (err, res) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, res);
+    }
+  });
+};
+
+// =========== PRODUCTS (done) ==========
+const createProduct = (productName, productDpt, callback) => {
+  connection.query('INSERT INTO products (product_name, department) VALUES (?, ?)', [productName, productDpt], (err, res) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, res);
+    }
+  });
+};
+
+const getProduct = (id, callback) => {
+  connection.query('SELECT * FROM products WHERE id = ?;', [id], (err, res) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, res);
+    }
+  });
+};
+
+const updateProduct = (productId, productName, callback) => {
+  connection.query('UPDATE products SET product_name = ? WHERE id = ?', [productName, productId], (err, res) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, res);
+    }
+  });
+};
+
+const deleteProduct = (productId, callback) => {
+  connection.query('DELETE FROM products WHERE id = ?', [productId], (err, res) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, res);
+    }
+  });
+};
+
+// just returns a random product, and shouldn't be used. front-end currently reliant on it.
+const getOne = (callback) => {
+  connection.query('SELECT * FROM products ORDER BY RAND() LIMIT 1;', (error, result) => {
+    if (error) {
+      console.error(error);
+      return;
+    }
+    //('THE PRODUCT THAT CAME BACK: ' + JSON.stringify(result));
+    callback(null, result);
+  });
+};
 
 
 // module export those functions
@@ -138,5 +225,13 @@ module.exports = {
   getReviews,
   getReview,
   updateReview,
-  deleteReview
+  deleteReview,
+  createUser,
+  fetchUser,
+  updateUser,
+  deleteUser,
+  createProduct,
+  getProduct,
+  updateProduct,
+  deleteProduct
 };

@@ -96,3 +96,25 @@ npm install
 ##### Delete review.
 ##### Params:
 - rId = review id.
+
+### Users:
+#### /api/ratings/users/insert
+##### Adds a user
+##### Params:
+- uname = username
+
+#### /api/ratings/users/:uId
+##### Returns a specific user's info
+##### Params:
+- uid = user id
+
+#### /api/ratings/users/update/:uId
+##### Update a user's info
+##### Params:
+- uId = user id
+- uname = username
+
+#### /api/ratings/users/delete/:uId
+##### Delete a user
+##### Params:
+- uId = userId
