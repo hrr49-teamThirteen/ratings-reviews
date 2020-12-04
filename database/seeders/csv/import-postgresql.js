@@ -24,12 +24,8 @@ async function processLineByLine(file, query) {
     input: fileStream,
     crlfDelay: Infinity
   });
-  // Note: we use the crlfDelay option to recognize all instances of CR LF
-  // ('\r\n') in input.txt as a single line break.
 
   for await (const line of rl) {
-    // Each line in input.txt will be successively available here as `line`.
-    //console.log(`Line from file: ${line}`);
     await client.query(query, line.split());
   }
 }
@@ -49,18 +45,3 @@ new Promise((res, rej) => {
   return processLineByLine('/home/user/Downloads/ratings-reviews/database/seeders/csv/reviews.csv',
 'INSERT INTO reviews (title, date, body, star_rating, user_id, prod_id) VALUES ($1, $2, $3, $4, $5, $6)');
 });
-
-
-
-
-/*
-client.connect();
-
-client.query("\\copy products(product_name) FROM '/home/user/Downloads/ratings-reviews/database/seeders/csv/products.csv' DELIMITER ',' CSV HEADER;", (err, res) => {
-  if (err) {
-    console.log(err);
-  } else {
-    console.log(res);
-  }
-});
-*/
