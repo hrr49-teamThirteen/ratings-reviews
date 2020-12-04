@@ -22,6 +22,12 @@
     "express": "^4.17.1",
     "mysql": "^2.18.1",
     "pg": "^8.5.1",
+<<<<<<< HEAD
+=======
+    "promisify": "0.0.3",
+    "puppeteer": "^5.4.1",
+    "random-date-generator": "^1.0.2",
+>>>>>>> f9b10910eff0ab4f06067283f6122c264a9471b7
     "react": "^16.14.0",
     "react-dom": "^16.14.0"
   },
