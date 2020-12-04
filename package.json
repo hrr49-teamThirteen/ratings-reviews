@@ -9,10 +9,11 @@
   },
   "scripts": {
     "start": "nodemon ./server/index.js",
-    "seed": "node ./database/fake/index.js",
+    "seed": "node ./database/seeders/old/index.js",
     "build": "webpack --watch -d eval-source-map",
     "test": "jest",
-    "csv-export": "node ./database/seeders/csv/export.js"
+    "csv-export": "node ./database/seeders/csv/export.js",
+    "csv-import-postgresql": "node ./database/seeders/csv/import-postgresql.js"
   },
   "dependencies": {
     "axios": "^0.21.0",
@@ -20,6 +21,7 @@
     "eslint": "^7.13.0",
     "express": "^4.17.1",
     "mysql": "^2.18.1",
+    "pg": "^8.5.1",
     "promisify": "0.0.3",
     "puppeteer": "^5.4.1",
     "random-date-generator": "^1.0.2",

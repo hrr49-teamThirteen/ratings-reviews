@@ -27,3 +27,6 @@ CREATE TABLE reviews (
   user_id int,
   prod_id int
 );
+
+ALTER TABLE reviews ADD FOREIGN KEY fk_reviews_products (products_id) REFERENCES products (id);
+ALTER TABLE reviews ADD FOREIGN KEY fk_reviews_user (user_id) REFERENCES products (id);
