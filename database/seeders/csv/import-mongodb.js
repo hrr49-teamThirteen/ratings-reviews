@@ -25,7 +25,7 @@ const productsModel = mongoose.model('Products', productsSchema);
 // Populate database from CSV
 const fs = require('fs');
 const readline = require('readline');
-async function processLineByLine(file, cb) {
+async function processLineByLine(file, cb, resolve) {
   console.log(`${file}`);
   const fileStream = fs.createReadStream(file);
 
@@ -42,21 +42,24 @@ async function processLineByLine(file, cb) {
       await cb(line.split(','));
     }
   }
+
+  resolve();
 }
 
 new Promise((res, rej) => {
   return processLineByLine('/home/user/Downloads/ratings-reviews/database/seeders/csv/products.csv', (args) => {
     return productsModel.create({product_id: Number(args[0]), product_name: String(args[1])});
-  });
+  }, res);
+  res();
 }).then((res) => {
   return processLineByLine('/home/user/Downloads/ratings-reviews/database/seeders/csv/users.csv', (args) => {
       return userModel.create({user_id: Number(args[0]), name: String(args[1])});
-  });
+  }, res);
 })
 .then((res) => {
   return processLineByLine('/home/user/Downloads/ratings-reviews/database/seeders/csv/images.csv', (args) => {
     return productsModel.updateOne({ product_id: args[1] }, { $push: { images: String(args[0]) } });
-  });
+  }, res);
 })
 .then((res) => {
   return processLineByLine('/home/user/Downloads/ratings-reviews/database/seeders/csv/reviews.csv', (args) => {
@@ -66,6 +69,6 @@ new Promise((res, rej) => {
       body:         String(args[2]),
       star_rating:  Number(args[3]),
       user_id:      Number(args[4])
-    }}});
+    }}}, res);
   });
 });

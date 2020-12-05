@@ -1,5 +1,7 @@
 package-lock.json
+
 database/seeders/csv/*.csv
+database/seeders/json/*.json
 
 ## MAC files ##
 .DS_Store
