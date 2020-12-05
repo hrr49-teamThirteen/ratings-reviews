@@ -13,7 +13,9 @@
     "build": "webpack --watch -d eval-source-map",
     "test": "jest",
     "csv-export": "node ./database/seeders/csv/export.js",
-    "json-export": "node ./database/seeders/json/export-json.js"
+    "json-export": "node ./database/seeders/json/export-json.js",
+    "csv-import-postgresql": "node ./database/seeders/csv/import-postgresql.js",
+    "csv-import-mongodb": "node ./database/seeders/csv/import-mongodb.js"
   },
   "dependencies": {
     "axios": "^0.21.0",
