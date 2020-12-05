@@ -26,10 +26,10 @@ function getProductsRow() {
 }
 
 const productsWriteStream = fs.createWriteStream(`${baseCsvDir}products.csv`);
-productsWriteStream.write('product_name\n');
+productsWriteStream.write('product_id,product_name\n');
 (async() => {
-  for(let i = 0; i < productCount; i++) {
-      if(!productsWriteStream.write(getProductsRow())) {
+  for(let i = 1; i <= productCount; i++) {
+      if(!productsWriteStream.write(`${i},${getProductsRow()}`)) {
           await new Promise(resolve => productsWriteStream.once('drain', resolve));
       }
   }
@@ -42,10 +42,10 @@ productsWriteStream.write('product_name\n');
   }
 
   const usersWriteStream = fs.createWriteStream(`${baseCsvDir}users.csv`);
-  usersWriteStream.write('username\n');
+  usersWriteStream.write('user_id,username\n');
   (async() => {
-    for(let i = 0; i < usersCount; i++) {
-        if(!usersWriteStream.write(getUsersRow())) {
+    for(let i = 1; i <= usersCount; i++) {
+        if(!usersWriteStream.write(`${i},${getUsersRow()}`)) {
             await new Promise(resolve => usersWriteStream.once('drain', resolve));
         }
     }
@@ -60,7 +60,7 @@ productsWriteStream.write('product_name\n');
     imagesWriteStream.write('loc,prod_id\n');
     console.log(`Generating ${imageCount} images to ${baseCsvDir}images.csv`);
     (async() => {
-      for(let i = 0; i < imageCount; i++) {
+      for(let i = 1; i <= imageCount; i++) {
           if(!imagesWriteStream.write(getImagesRow())) {
               // Will pause every 16384 iterations until `drain` is emitted
               await new Promise(resolve => imagesWriteStream.once('drain', resolve));
@@ -85,7 +85,7 @@ productsWriteStream.write('product_name\n');
       reviewsWriteStream.write('title,date,body,star_rating,user_id,prod_id\n');
       (async() => {
         console.log(`Generating ${reviewsCount} reviews to ${baseCsvDir}reviews.csv\nThis will take a long time...`);
-        for(let i = 0; i < reviewsCount; i++) {
+        for(let i = 1; i <= reviewsCount; i++) {
             if(!reviewsWriteStream.write(getReviewsRow())) {
                 await new Promise(resolve => reviewsWriteStream.once('drain', resolve));
             }
