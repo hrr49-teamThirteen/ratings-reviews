@@ -35,10 +35,10 @@ async function processLineByLine(file, query) {
 
 new Promise((res, rej) => {
   return processLineByLine('/home/user/Downloads/ratings-reviews/database/seeders/csv/products.csv',
-  'INSERT INTO products (product_name) VALUES ($1)');
+  'INSERT INTO products (product_name) VALUES ($2)');
 }).then((res) => {
   return processLineByLine('/home/user/Downloads/ratings-reviews/database/seeders/csv/users.csv',
-  'INSERT INTO users (username) VALUES ($1)');
+  'INSERT INTO users (username) VALUES ($2)');
 })
 .then((res) => {
   return processLineByLine('/home/user/Downloads/ratings-reviews/database/seeders/csv/images.csv',
