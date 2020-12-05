@@ -70,11 +70,11 @@ const productsWriteStream = fs.createWriteStream(`${baseCsvDir}products.json`);
   const usersWriteStream = fs.createWriteStream(`${baseCsvDir}users.json`);
   (async() => {
     for(let i = 1; i <= usersCount; i++) {
-        if(!usersWriteStream.write(`${i},${getUsersRow()}`)) {
+        if(!usersWriteStream.write(JSON.stringify(getUsersRow(i)))) {
             await new Promise(resolve => usersWriteStream.once('drain', resolve));
         }
     }
-    console.log('Done!');
+    console.log('Done!\nImport with these commands:\nmongoimport --db reviewsdb --collection products --file products.json\ndb.products.createIndex({product_id: -1})\nmongoimport --db reviewsdb --collection users --file users.json\ndb.users.createIndex({user_id: -1})');
     usersWriteStream.close();
   })();
 })();
