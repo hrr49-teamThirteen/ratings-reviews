@@ -19,6 +19,8 @@ function randomDate(start, end, startHour, endHour) {
   return date;
 }
 
+console.log('Exporting CSV data for SQL import...\nThis will take a while, go get some coffee :)');
+
 // Generate products.csv
 console.log(`Generating ${productCount} products to ${baseCsvDir}products.csv`);
 function getProductsRow() {
@@ -26,10 +28,10 @@ function getProductsRow() {
 }
 
 const productsWriteStream = fs.createWriteStream(`${baseCsvDir}products.csv`);
-productsWriteStream.write('product_id,product_name\n');
+productsWriteStream.write('product_name\n');
 (async() => {
   for(let i = 1; i <= productCount; i++) {
-      if(!productsWriteStream.write(`${i},${getProductsRow()}`)) {
+      if(!productsWriteStream.write(getProductsRow())) {
           await new Promise(resolve => productsWriteStream.once('drain', resolve));
       }
   }
@@ -42,10 +44,10 @@ productsWriteStream.write('product_id,product_name\n');
   }
 
   const usersWriteStream = fs.createWriteStream(`${baseCsvDir}users.csv`);
-  usersWriteStream.write('user_id,username\n');
+  usersWriteStream.write('username\n');
   (async() => {
     for(let i = 1; i <= usersCount; i++) {
-        if(!usersWriteStream.write(`${i},${getUsersRow()}`)) {
+        if(!usersWriteStream.write(getUsersRow())) {
             await new Promise(resolve => usersWriteStream.once('drain', resolve));
         }
     }
@@ -92,6 +94,11 @@ productsWriteStream.write('product_id,product_name\n');
         }
         reviewsWriteStream.close();
         console.log('Done!');
+        console.log('Run these commands in psql for import:');
+        console.log("COPY products(product_name) FROM 'path/ratings-reviews/database/seeders/csv/products.csv' DELIMITER ',' CSV HEADER;");
+        console.log("COPY users(username) FROM 'path/ratings-reviews/database/seeders/csv/users.csv' DELIMITER ',' CSV HEADER;");
+        console.log("COPY images(loc, prod_id) FROM 'path/ratings-reviews/database/seeders/csv/images.csv' DELIMITER ',' CSV HEADER;");
+        console.log("COPY reviews(title, date, body, star_rating, user_id, prod_id) FROM 'path/ratings-reviews/database/seeders/csv/reviews.csv' DELIMITER ',' CSV HEADER;");
       })();
     })();
   })();
