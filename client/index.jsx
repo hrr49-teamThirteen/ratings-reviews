@@ -12,7 +12,7 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      prodId: 1,
+      prodId: 1005,
       currentUser: '',
       rateableAttributes: [], // build a function in fakeData and call it here
       reviews: [],
@@ -33,7 +33,7 @@ class App extends React.Component {
   }
 
   getReviews() {
-    axios.get('/api/ratings/reviews')
+    axios.get(`/api/ratings/reviews/${this.state.prodId}`)
       .then(response => {
         // what the heck's this bonus promise about?
         new Promise((resolve, reject) => {

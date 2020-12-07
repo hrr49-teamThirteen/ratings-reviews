@@ -28,10 +28,10 @@ app.post('/api/ratings/images/insert/:prodId', (req, res) => {
 app.get('/api/ratings/images/:prodId', (req, res) => {
   db.fetchImages(req.params.prodId, (error, result) => {
     if (error) {
-      console.error(error);
-      return;
+      res.status(401).send(error);
+    } else {
+      res.status(200).send(result);
     }
-    res.status(200).send(result);
   });
 });
 
@@ -83,7 +83,7 @@ app.post('/api/ratings/reviews/insert/:pId', (req, res) => {
 });
 
 // get reviews. original and shouldnt practically be used
-app.get('/api/ratings/reviews', (req, res) => {
+/*app.get('/api/ratings/reviews', (req, res) => {
   db.getReviews((err, dat) => {
     if (err) {
       res.status(401).send(err);
@@ -91,7 +91,7 @@ app.get('/api/ratings/reviews', (req, res) => {
       res.status(200).send(dat);
     }
   });
-});
+});*/
 
 // gets a single review based on product id
 app.get('/api/ratings/reviews/:pId', (req, res) => {
