@@ -13,6 +13,7 @@ GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO student;
 GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO student;
 */
 
+
 CREATE TABLE "products" (
 	"id" serial NOT NULL,
 	"product_name" varchar(120) NOT NULL,
@@ -46,3 +47,8 @@ CREATE TABLE "reviews" (
 ALTER TABLE "images" ADD CONSTRAINT "images_fk0" FOREIGN KEY ("prod_id") REFERENCES "products"("id") ON DELETE CASCADE;
 ALTER TABLE "reviews" ADD CONSTRAINT "reviews_fk0" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE;
 ALTER TABLE "reviews" ADD CONSTRAINT "reviews_fk1" FOREIGN KEY ("prod_id") REFERENCES "products"("id") ON DELETE CASCADE;
+
+/* Foreign Key Indexes: */
+CREATE INDEX reviews_user_id_index ON reviews (user_id);
+CREATE INDEX reviews_prod_id_index ON reviews (prod_id);
+CREATE INDEX images_prod_id_index ON images (prod_id);
