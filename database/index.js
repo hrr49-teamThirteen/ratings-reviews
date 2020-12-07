@@ -1,76 +1,65 @@
-const mysql = require('mysql');
+const pg = require('pg');
 
-const connection = mysql.createConnection({
+const conn = {
   host: 'localhost',
+  port: 5432,
   user: 'student',
   database: 'reviewsdb',
   password: 'password',
-  insecureAuth: true
-});
+};
 
-// create the functions
+const connection = new pg.Client(`postgres://${conn.user}:${conn.password}@${conn.host}:${conn.port}/${conn.database}`)
 
 connection.connect();
 
 // =========== IMAGES (done) ==========
 // add image
 const createImage = (prodId, imgLoc, callback) => {
-  connection.query('INSERT INTO images (prod_id, loc) VALUES (?, ?)', [prodId, imgLoc], (err, res) => {
-    if (err) {
-      callback(err, null);
-    } else {
-      callback(res);
-    }
+  connection.query('INSERT INTO images (prod_id, loc) VALUES ($1, $2)', [prodId, imgLoc]).then(res => {
+    callback(null, res);
+  }).catch(err => {
+    callback(err, null);
   });
 };
 
 // reads all images
 const fetchImages = (prodId, callback) => {
-  connection.query('SELECT loc FROM images WHERE prod_id = ?;', [prodId], (err, res) => {
-    if (err) {
-      callback(res, null);
-    } else {
-      callback(null, res);
-    }
+  connection.query('SELECT loc FROM images WHERE prod_id = $1;', [prodId]).then(res => {
+    callback(null, res.rows);
+  }).catch(err => {
+    callback(err, null);
   });
 };
 
 // Update image product id, or location, based on image id.
 const updateImage = (imgId, prodId, imgLoc, callback) => {
-  connection.query('UPDATE images SET prod_id = ?, loc = ? WHERE id = ?', [prodId, imgLoc, imgId], (err, res) => {
-    if (err) {
-      callback(err, null);
-      return;
-    } else {
-      callback(res);
-    }
+  connection.query('UPDATE images SET prod_id = $1, loc = $2 WHERE id = $3', [prodId, imgLoc, imgId]).then(res => {
+    callback(null, res.rows);
+  }).catch(err => {
+    callback(err, null);
   });
 };
 
 // Delete image by image id
 const deleteImage = (imgId, callback) => {
-  connection.query('DELETE FROM images WHERE id = ?', [imgId], (err, res) => {
-    if (err) {
-      callback(err, null);
-    } else {
-      callback(null, res);
-    }
+  connection.query('DELETE FROM images WHERE id = $1', [imgId]).then(res => {
+    callback(null, res);
+  }).catch(err => {
+    callback(err, null);
   });
 };
 
 // =========== REVIEWS (done) ==========
 const postReview = (title, date = new Date(), uname, body, starRating, prodId, callback) => {
   console.log([...arguments]);
-  connection.query('INSERT INTO reviews (title, datePosted, username, body, star_rating, prod_id) VALUES (?, ?, ?, ?, ?, ?);', [title, date, uname, body, starRating, prodId], (err, res) => {
-    if (err) {
-      callback(err, null);
-    } else {
-      callback(null, res);
-    }
+  connection.query('INSERT INTO reviews (title, datePosted, username, body, star_rating, prod_id) VALUES ($1, $2, $3, $4, $5, $6);', [title, date, uname, body, starRating, prodId]).then(res => {
+    callback(null, res);
+  }).catch(err => {
+    callback(err, null);
   });
 };
 
-const getReviews = (callback) => {
+/*const getReviews = (callback) => {
   connection.query('SELECT * FROM reviews;', (error, result) => {
     if (error) {
       console.error(error);
@@ -86,124 +75,101 @@ const getReviews = (callback) => {
     //console.log('This is the result after username processing:' + JSON.stringify(result));
     callback(null, result);
   });
-};
+};*/
 
-const getReview = (pid, callback) => {
-  connection.query('SELECT * FROM reviews WHERE prod_id = ?;', [pid], (err, res) => {
-    if (err) {
-      callback(err, null);
-    } else {
-      callback(null, res);
-    }
+const getReview = (pid = 1, callback) => {
+  connection.query('SELECT * FROM reviews WHERE prod_id = $1;', [pid]).then(res => {
+    callback(null, res.rows)
+  }).catch(err => {
+    callback(err, null);
   });
 };
 
 const updateReview = (reviewId, reviewTitle, reviewDate = new Date(), reviewUname, reviewBody, reviewSRating = 0, callback) => {
-  connection.query('UPDATE reviews SET title = ?, datePosted = ?, username = ?, body = ?, star_rating = ?, prod_id = ? WHERE id = ?',
-  [reviewTitle, reviewDate, reviewUname, reviewBody, reviewSRating, reviewId],
-  (err, res) => {
-    if (err) {
-      callback(err, null);
-    } else {
-      callback(null, res);
-    }
+  connection.query('UPDATE reviews SET title = $1, datePosted = $2, username = $3, body = $4, star_rating = $5, prod_id = $6 WHERE id = $7',
+  [reviewTitle, reviewDate, reviewUname, reviewBody, reviewSRating, reviewId]).then(res => {
+    callback(null, res);
+  }).catch(err => {
+    callback(err, null);
   });
 };
 
 const deleteReview = (reviewId, callback) => {
-  connection.query('DELETE FROM reviews WHERE id = ?', [reviewId], (err, res) => {
-    if (err) {
-      callback(err, null);
-    } else {
-      callback(null, err);
-    }
+  connection.query('DELETE FROM reviews WHERE id = $1', [reviewId]).then(res => {
+    callback(null, res);
+  }).catch(err => {
+    callback(err, null);
   });
 };
 // ===================================
 // =========== USERS (done) ==========
 const createUser = (uname, callback) => {
-  connection.query('INSERT INTO users (username) VALUES (?);', [uname], (err, res) => {
-    if (err) {
-      callback(err, null);
-    } else {
-      callback(null, res);
-    }
+  connection.query('INSERT INTO users (username) VALUES ($1);', [uname]).then(res => {
+    callback(null, res);
+  }).catch(err => {
+    callback(err, null);
   });
 };
 
 const fetchUser = (uid, callback) => {
-  connection.query('SELECT * FROM users WHERE id = ?;', [uid], (err, res) => {
-    if (err) {
-      callback(err, null);
-    } else {
-      callback(null, res);
-    }
+  connection.query('SELECT * FROM users WHERE id = $1;', [uid]).then(res => {
+    callback(null, res.rows);
+  }).catch(err => {
+    callback(err, null);
   });
 };
 
 const updateUser = (userId, userName, callback) => {
-  connection.query('UPDATE users SET username = ? WHERE id = ?;', [userName, userId], (err, res) => {
-    if (err) {
-      callback(err, null);
-    } else {
-      callback(null, res);
-    }
+  connection.query('UPDATE users SET username = $1 WHERE id = $2;', [userName, userId]).then(res => {
+    callback(null, res);
+  }).catch(err => {
+    callback(err, null);
   });
 };
 
 const deleteUser = (userId, callback) => {
-  connection.query('DELETE FROM users WHERE id = ?;', [userId], (err, res) => {
-    if (err) {
-      callback(err, null);
-    } else {
-      callback(null, res);
-    }
+  connection.query('DELETE FROM users WHERE id = $1;', [userId]).then(res => {
+    callback(null, res);
+  }).catch(err => {
+    callback(err, null);
   });
 };
 
 // =========== PRODUCTS (done) ==========
 const createProduct = (productName, callback) => {
-  connection.query('INSERT INTO products (product_name) VALUES (?)', [productName], (err, res) => {
-    if (err) {
-      callback(err, null);
-    } else {
-      callback(null, res);
-    }
+  connection.query('INSERT INTO products (product_name) VALUES ($1)', [productName]).then(res => {
+    callback(null, res);
+  }).catch(err => {
+    callback(err, null);
   });
 };
 
 const getProduct = (id, callback) => {
-  connection.query('SELECT * FROM products WHERE id = ?;', [id], (err, res) => {
-    if (err) {
-      callback(err, null);
-    } else {
-      callback(null, res);
-    }
+  connection.query('SELECT * FROM products WHERE id = $1;', [id]).then(res => {
+    callback(null, res.rows);
+  }).catch(err => {
+    callback(err, null);
   });
 };
 
 const updateProduct = (productId, productName, callback) => {
-  connection.query('UPDATE products SET product_name = ? WHERE id = ?', [productName, productId], (err, res) => {
-    if (err) {
-      callback(err, null);
-    } else {
-      callback(null, res);
-    }
+  connection.query('UPDATE products SET product_name = $1 WHERE id = $2', [productName, productId]).then(res => {
+    callback(null, res);
+  }).then(err => {
+    callback(err, null);
   });
 };
 
 const deleteProduct = (productId, callback) => {
-  connection.query('DELETE FROM products WHERE id = ?', [productId], (err, res) => {
-    if (err) {
-      callback(err, null);
-    } else {
-      callback(null, res);
-    }
+  connection.query('DELETE FROM products WHERE id = $1', [productId]).then(res => {
+    callback(null, res);
+  }).catch(err => {
+    callback(err, null);
   });
 };
 
 // just returns a random product, and shouldn't be used. front-end currently reliant on it.
-const getOne = (callback) => {
+/*const getOne = (callback) => {
   connection.query('SELECT * FROM products ORDER BY RAND() LIMIT 1;', (error, result) => {
     if (error) {
       console.error(error);
@@ -212,7 +178,7 @@ const getOne = (callback) => {
     //('THE PRODUCT THAT CAME BACK: ' + JSON.stringify(result));
     callback(null, result);
   });
-};
+};*/
 
 
 // module export those functions
@@ -222,7 +188,6 @@ module.exports = {
   updateImage,
   deleteImage,
   postReview,
-  getReviews,
   getReview,
   updateReview,
   deleteReview,
