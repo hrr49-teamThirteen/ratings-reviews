@@ -15,7 +15,7 @@ connection.connect();
 // =========== IMAGES (done) ==========
 // add image
 const createImage = (reviewId, imgLoc, callback) => {
-  connection.query('INSERT INTO images (loc, review_id) VALUES ($1, $2, $3)', [imgLoc, reviewId]).then(res => {
+  connection.query('INSERT INTO images (loc, review_id) VALUES ($1, $2)', [imgLoc, reviewId]).then(res => {
     callback(null, res);
   }).catch(err => {
     callback(err, null);

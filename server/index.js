@@ -11,11 +11,11 @@ app.use(express.static(__dirname + '/../public/'));
 
 // =========== IMAGES ==========
 // add image
-app.post('/api/ratings/images/insert/:prodId', (req, res) => {
-  const prodId = Number(req.params.prodId);
+app.post('/api/ratings/images/insert/:review_id', (req, res) => {
+  const reviewId = Number(req.params.review_id);
   const loc = String(req.query.loc);
 
-  db.createImage(prodId, loc, (err, dat) => {
+  db.createImage(reviewId, loc, (err, dat) => {
     if (err) {
       res.status(401).send(err);
     } else {
@@ -36,12 +36,12 @@ app.get('/api/ratings/images/:prodId', (req, res) => {
 });
 
 // Update image product id, or location, based on image id.
-app.post('/api/ratings/images/update/:imgId/:prodId', (req, res) => {
+app.post('/api/ratings/images/update/:imgId/:review_id', (req, res) => {
   const imgId = Number(req.params.imgId);
-  const prodId = Number(req.params.prodId);
+  const reviewId = Number(req.params.review_id);
   const loc = String(req.query.loc);
 
-  db.updateImage(imgId, prodId, loc, (err, dat) => {
+  db.updateImage(imgId, reviewId, loc, (err, dat) => {
     if (err) {
       res.status(401).send(err);
     } else {
