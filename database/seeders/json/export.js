@@ -33,7 +33,8 @@ function getImages() {
   const images = [];
 
   for (let i = 0; i < count; i++) {
-    images.push(faker.image.image());
+    const img = `${aws.url}/images/${getRandomIntRange(1, 60)}.webp`
+    images.push(img);
   }
 
   return images;

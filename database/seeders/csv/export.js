@@ -7,6 +7,7 @@ const variance = getRandomIntRange(2, 5);
 const imageCount = (productCount * variance);
 const usersCount = getRandomIntRange((productCount / variance), productCount);
 const reviewsCount = getRandomIntRange(((usersCount * variance) / variance), (usersCount * variance));
+const aws = require('../../../aws.js');
 
 function getRandomIntRange(lo, hi) {
   return Math.floor(Math.random() * (hi - lo) + lo);
@@ -55,7 +56,8 @@ productsWriteStream.write('product_name\n');
 
     // Generate images.csv
     function getImagesRow() {
-      return `${faker.image.image()},${getRandomIntRange(1, productCount)}\n`;  // faker image used by original repo
+      const img = `${aws.url}/images/${getRandomIntRange(1, 60)}.webp`
+      return `${img},${getRandomIntRange(1, productCount)}\n`;  // faker image used by original repo
     }
 
     const imagesWriteStream = fs.createWriteStream(`${baseCsvDir}images.csv`);
