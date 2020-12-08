@@ -22,18 +22,19 @@ function getReviews() {
     const body = faker.lorem.sentences(getRandomIntRange(1, 5)).replace(/,/g, '');
     const star_rating = getRandomIntRange(1, 5);
     const user_id = getRandomIntRange(1, usersCount);
-    reviews.push({title: title, date: date, body: body, star_rating: star_rating, user_id: user_id});
+    reviews.push({title: title, date: date, body: body, star_rating: star_rating, user_id: user_id, images: getImages()});
   }
 
   return reviews;
 }
 
 function getImages() {
-  const count = getRandomIntRange(1, 10);
+  const count = getRandomIntRange(0, 5);
   const images = [];
 
   for (let i = 0; i < count; i++) {
-    images.push(faker.image.image());
+    const img = `${aws.url}/images/${getRandomIntRange(1, 60)}.webp`
+    images.push(img);
   }
 
   return images;
@@ -43,9 +44,8 @@ function getProductsRow(index) {
   const product_id = index;
   const product_name = faker.commerce.productName();
   const reviews = getReviews();
-  const images = getImages();
 
-  return {product_id: product_id, product_name: product_name, reviews: reviews, images: images};
+  return {product_id: product_id, product_name: product_name, reviews: reviews};
 }
 
 

@@ -14,8 +14,8 @@ connection.connect();
 
 // =========== IMAGES (done) ==========
 // add image
-const createImage = (prodId, imgLoc, callback) => {
-  connection.query('INSERT INTO images (prod_id, loc) VALUES ($1, $2)', [prodId, imgLoc]).then(res => {
+const createImage = (reviewId, imgLoc, callback) => {
+  connection.query('INSERT INTO images (loc, review_id) VALUES ($1, $2)', [imgLoc, reviewId]).then(res => {
     callback(null, res);
   }).catch(err => {
     callback(err, null);
@@ -24,7 +24,7 @@ const createImage = (prodId, imgLoc, callback) => {
 
 // reads all images
 const fetchImages = (prodId, callback) => {
-  connection.query('SELECT loc FROM images WHERE prod_id = $1;', [prodId]).then(res => {
+  connection.query('select i.loc from reviews r left join images i on r.id = i.review_id where r.prod_id = $1;', [prodId]).then(res => {
     callback(null, res.rows);
   }).catch(err => {
     callback(err, null);
@@ -32,8 +32,8 @@ const fetchImages = (prodId, callback) => {
 };
 
 // Update image product id, or location, based on image id.
-const updateImage = (imgId, prodId, imgLoc, callback) => {
-  connection.query('UPDATE images SET prod_id = $1, loc = $2 WHERE id = $3', [prodId, imgLoc, imgId]).then(res => {
+const updateImage = (imgLoc, reviewId, imgId, callback) => {
+  connection.query('UPDATE images SET loc = $1, review_id = $2 WHERE id = $3', [imgLoc, reviewId, imgId]).then(res => {
     callback(null, res.rows);
   }).catch(err => {
     callback(err, null);

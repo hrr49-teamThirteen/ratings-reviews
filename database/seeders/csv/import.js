@@ -44,7 +44,7 @@ new Promise((res, rej) => {
 })
 .then((res) => {
   return processLineByLine(`${dir}/images.csv`,
-'INSERT INTO images (loc, prod_id) VALUES ($1, $2)');
+'INSERT INTO images (loc, review_id) VALUES ($1, $2)');
 })
 .then((res) => {
   return processLineByLine(`${dir}/reviews.csv`,
