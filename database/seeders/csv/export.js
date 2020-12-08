@@ -4,9 +4,9 @@ const fs = require('fs');
 const baseCsvDir = './database/seeders/csv/'
 const productCount = 10000000;
 const variance = getRandomIntRange(2, 5);
-const imageCount = (productCount * variance);
 const usersCount = getRandomIntRange((productCount / variance), productCount);
 const reviewsCount = getRandomIntRange(((usersCount * variance) / variance), (usersCount * variance));
+const imageCount = getRandomIntRange(reviewsCount, (reviewsCount * variance));
 const aws = require('../../../aws.js');
 
 function getRandomIntRange(lo, hi) {
@@ -54,53 +54,53 @@ productsWriteStream.write('product_name\n');
     }
     usersWriteStream.close();
 
-    // Generate images.csv
-    function getImagesRow() {
-      const img = `${aws.url}/images/${getRandomIntRange(1, 60)}.webp`
-      return `${img},${getRandomIntRange(1, productCount)}\n`;  // faker image used by original repo
+    // Generate reviews.csv
+    function getReviewsRow() {
+      // title, date, body, rating, user_id, prod_id
+      const title = faker.lorem.sentence().replace(/,/g, ''); // remove commas in fake sentences for csv
+      const date = faker.date.soon(90);
+      const body = faker.lorem.sentences(getRandomIntRange(1, 5)).replace(/,/g, '');
+      const rating = getRandomIntRange(1, 5);
+      const uid = getRandomIntRange(1, usersCount);
+      const pid = getRandomIntRange(1, productCount);
+
+      return `${title},${date},${body},${rating},${uid},${pid}\n`;
     }
 
-    const imagesWriteStream = fs.createWriteStream(`${baseCsvDir}images.csv`);
-    imagesWriteStream.write('loc,prod_id\n');
-    console.log(`Generating ${imageCount} images to ${baseCsvDir}images.csv`);
+    const reviewsWriteStream = fs.createWriteStream(`${baseCsvDir}reviews.csv`);
+    reviewsWriteStream.write('title,date,body,star_rating,user_id,prod_id\n');
     (async() => {
-      for(let i = 1; i <= imageCount; i++) {
-          if(!imagesWriteStream.write(getImagesRow())) {
-              // Will pause every 16384 iterations until `drain` is emitted
-              await new Promise(resolve => imagesWriteStream.once('drain', resolve));
+      console.log(`Generating ${reviewsCount} reviews to ${baseCsvDir}reviews.csv\nThis will take a long time...`);
+      for(let i = 1; i <= reviewsCount; i++) {
+          if(!reviewsWriteStream.write(getReviewsRow())) {
+              await new Promise(resolve => reviewsWriteStream.once('drain', resolve));
           }
       }
-      imagesWriteStream.close();
+      reviewsWriteStream.close();
 
-      // Generate reviews.csv
-      function getReviewsRow() {
-        // title, date, body, rating, user_id, prod_id
-        const title = faker.lorem.sentence().replace(/,/g, ''); // remove commas in fake sentences for csv
-        const date = faker.date.soon(90);
-        const body = faker.lorem.sentences(getRandomIntRange(1, 5)).replace(/,/g, '');
-        const rating = getRandomIntRange(1, 5);
-        const uid = getRandomIntRange(1, usersCount);
-        const pid = getRandomIntRange(1, productCount);
-
-        return `${title},${date},${body},${rating},${uid},${pid}\n`;
+      // Generate images.csv
+      function getImagesRow() {
+        const img = `${aws.url}/images/${getRandomIntRange(1, 60)}.webp`
+        return `${img},${getRandomIntRange(1, reviewsCount)}\n`;  // faker image used by original repo
       }
 
-      const reviewsWriteStream = fs.createWriteStream(`${baseCsvDir}reviews.csv`);
-      reviewsWriteStream.write('title,date,body,star_rating,user_id,prod_id\n');
+      const imagesWriteStream = fs.createWriteStream(`${baseCsvDir}images.csv`);
+      imagesWriteStream.write('loc,review_id\n');
+      console.log(`Generating ${imageCount} images to ${baseCsvDir}images.csv`);
       (async() => {
-        console.log(`Generating ${reviewsCount} reviews to ${baseCsvDir}reviews.csv\nThis will take a long time...`);
-        for(let i = 1; i <= reviewsCount; i++) {
-            if(!reviewsWriteStream.write(getReviewsRow())) {
-                await new Promise(resolve => reviewsWriteStream.once('drain', resolve));
+        for(let i = 1; i <= imageCount; i++) {
+            if(!imagesWriteStream.write(getImagesRow())) {
+                // Will pause every 16384 iterations until `drain` is emitted
+                await new Promise(resolve => imagesWriteStream.once('drain', resolve));
             }
         }
-        reviewsWriteStream.close();
+        imagesWriteStream.close();
         console.log('Done!');
         console.log('Run these commands in psql for import:');
         console.log("COPY products(product_name) FROM 'path/ratings-reviews/database/seeders/csv/products.csv' DELIMITER ',' CSV HEADER;");
         console.log("COPY users(username) FROM 'path/ratings-reviews/database/seeders/csv/users.csv' DELIMITER ',' CSV HEADER;");
-        console.log("COPY images(loc, prod_id) FROM 'path/ratings-reviews/database/seeders/csv/images.csv' DELIMITER ',' CSV HEADER;");
         console.log("COPY reviews(title, date, body, star_rating, user_id, prod_id) FROM 'path/ratings-reviews/database/seeders/csv/reviews.csv' DELIMITER ',' CSV HEADER;");
+        console.log("COPY images(loc, review_id) FROM 'path/ratings-reviews/database/seeders/csv/images.csv' DELIMITER ',' CSV HEADER;");
       })();
     })();
   })();

@@ -29,7 +29,7 @@ CREATE TABLE "users" (
 CREATE TABLE "images" (
 	"id" serial NOT NULL,
 	"loc" varchar(250) NOT NULL,
-	"prod_id" int NOT NULL,
+	"review_id" int NOT NULL,
   CONSTRAINT "images_pk" PRIMARY KEY ("id")
 );
 
@@ -44,11 +44,11 @@ CREATE TABLE "reviews" (
   CONSTRAINT "reviews_pk" PRIMARY KEY ("id")
 );
 
-ALTER TABLE "images" ADD CONSTRAINT "images_fk0" FOREIGN KEY ("prod_id") REFERENCES "products"("id") ON DELETE CASCADE;
+ALTER TABLE "images" ADD CONSTRAINT "images_fk0" FOREIGN KEY ("review_id") REFERENCES "reviews"("id") ON DELETE CASCADE;
 ALTER TABLE "reviews" ADD CONSTRAINT "reviews_fk0" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE;
 ALTER TABLE "reviews" ADD CONSTRAINT "reviews_fk1" FOREIGN KEY ("prod_id") REFERENCES "products"("id") ON DELETE CASCADE;
 
 /* Foreign Key Indexes: */
+CREATE INDEX images_review_id_index ON images (review_id);
 CREATE INDEX reviews_user_id_index ON reviews (user_id);
 CREATE INDEX reviews_prod_id_index ON reviews (prod_id);
-CREATE INDEX images_prod_id_index ON images (prod_id);
