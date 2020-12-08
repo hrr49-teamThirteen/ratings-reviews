@@ -14,8 +14,8 @@ connection.connect();
 
 // =========== IMAGES (done) ==========
 // add image
-const createImage = (prodId, reviewId, imgLoc, callback) => {
-  connection.query('INSERT INTO images (loc, prod_id, review_id) VALUES ($1, $2, $3)', [imgLoc, prodId, reviewId]).then(res => {
+const createImage = (reviewId, imgLoc, callback) => {
+  connection.query('INSERT INTO images (loc, review_id) VALUES ($1, $2, $3)', [imgLoc, reviewId]).then(res => {
     callback(null, res);
   }).catch(err => {
     callback(err, null);
@@ -32,8 +32,8 @@ const fetchImages = (prodId, callback) => {
 };
 
 // Update image product id, or location, based on image id.
-const updateImage = (imgLoc, prodId, reviewId, imgId, callback) => {
-  connection.query('UPDATE images SET loc = $1, prod_id = $2, review_id = $3 WHERE id = $4', [imgLoc, prodId, reviewId, imgId]).then(res => {
+const updateImage = (imgLoc, reviewId, imgId, callback) => {
+  connection.query('UPDATE images SET loc = $1, review_id = $2 WHERE id = $3', [imgLoc, reviewId, imgId]).then(res => {
     callback(null, res.rows);
   }).catch(err => {
     callback(err, null);
