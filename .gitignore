@@ -3,6 +3,7 @@ package-lock.json
 database/seeders/csv/*.csv
 database/seeders/json/*.json
 public/bundle.js
+/report.json
 
 ## MAC files ##
 .DS_Store
