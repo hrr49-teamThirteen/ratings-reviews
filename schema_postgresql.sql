@@ -9,7 +9,7 @@ psql -f schema_postgresql.sql -p 5432 -U postgres -d reviewsdb;
 CREATE USER student with PASSWORD 'password';
 GRANT ALL PRIVILEGES ON DATABASE reviewsdb to student;
 GRANT CONNECT ON DATABASE reviewsdb TO student;
-GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA reviewsdb TO student;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO student;
 GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO student;
 */
 

@@ -1,10 +1,11 @@
 const faker = require('faker');
 const fs = require('fs');
-
+const aws = require('../../../aws.js');
 const baseCsvDir = './database/seeders/json/'
 const productCount = 10000000;
 const variance = getRandomIntRange(2, 5);
 const usersCount = getRandomIntRange((productCount / variance), productCount);
+
 
 console.log('You should only be using this script if you will import this manually in mongodb');
 
@@ -22,7 +23,7 @@ function getReviews() {
     const body = faker.lorem.sentences(getRandomIntRange(1, 5)).replace(/,/g, '');
     const star_rating = getRandomIntRange(1, 5);
     const user_id = getRandomIntRange(1, usersCount);
-    reviews.push({title: title, date: date, body: body, star_rating: star_rating, user_id: user_id, images: getImages()});
+    reviews.push({review_id: (i + 1), title: title, date: date, body: body, star_rating: star_rating, user_id: user_id, images: getImages()});
   }
 
   return reviews;
@@ -32,8 +33,8 @@ function getImages() {
   const count = getRandomIntRange(0, 5);
   const images = [];
 
-  for (let i = 0; i < count; i++) {
-    const img = `${aws.url}/images/${getRandomIntRange(1, 60)}.webp`
+  for (let i = 1; i < count; i++) {
+    const img = {image_id: (i + 1), loc: `${aws.url}/images/${getRandomIntRange(1, 60)}.webp`};
     images.push(img);
   }
 

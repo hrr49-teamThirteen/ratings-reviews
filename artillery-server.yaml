@@ -1,0 +1,20 @@
+config:
+  target: http://localhost:4444
+  phases:
+    - duration: 60
+      arrivalRate: 1
+      name: "1 RPS"
+    - duration: 60
+      arrivalRate: 10
+      name: "10 RPS"
+    - duration: 60
+      arrivalRate: 100
+      name: "100 RPS"
+    - duration: 60
+      arrivalRate: 1000
+      name: "1000 RPS"
+
+scenarios:
+  - flow:
+    - get:
+        url: "/"
