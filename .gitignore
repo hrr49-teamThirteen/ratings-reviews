@@ -1,7 +1,8 @@
+newrelic.js
 package-lock.json
-
 database/seeders/csv/*.csv
 database/seeders/json/*.json
+public/bundle.js
 
 ## MAC files ##
 .DS_Store
