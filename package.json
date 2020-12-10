@@ -16,7 +16,7 @@
     "csv-import": "node ./database/seeders/csv/import.js",
     "json-export": "node ./database/seeders/json/export.js",
     "json-import": "node ./database/seeders/json/import.js",
-    "stress-test": "artillery run --output report.json artillery-server.yaml"
+    "stress": "artillery run --output report.json artillery-server.yaml"
   },
   "dependencies": {
     "axios": "^0.21.0",

@@ -50,34 +50,16 @@ const deleteImage = (imgId, callback) => {
 };
 
 // =========== REVIEWS (done) ==========
-const postReview = (title, date = new Date(), uname, body, starRating, prodId, callback) => {
-  console.log([...arguments]);
-  connection.query('INSERT INTO reviews (title, datePosted, username, body, star_rating, prod_id) VALUES ($1, $2, $3, $4, $5, $6);', [title, date, uname, body, starRating, prodId]).then(res => {
+const postReview = (title, date = new Date(), body, starRating, userId, prodId, callback) => {
+  //console.log([...arguments]);
+  connection.query('INSERT INTO reviews (title, date, body, star_rating, user_id, prod_id) VALUES ($1, $2, $3, $4, $5, $6);', [title, date, body, starRating, userId, prodId]).then(res => {
     callback(null, res);
   }).catch(err => {
     callback(err, null);
   });
 };
 
-/*const getReviews = (callback) => {
-  connection.query('SELECT * FROM reviews;', (error, result) => {
-    if (error) {
-      console.error(error);
-      return;
-    }
-    for (let review of result) {
-      if (review.username === null) {
-        fetchUser(review.userid, (error, result) => {
-          review.username = result;
-        });
-      }
-    }
-    //console.log('This is the result after username processing:' + JSON.stringify(result));
-    callback(null, result);
-  });
-};*/
-
-const getReview = (pid = 1, callback) => {
+const getReviews = (pid = 1, callback) => {
   connection.query('SELECT * FROM reviews WHERE prod_id = $1;', [pid]).then(res => {
     callback(null, res.rows)
   }).catch(err => {
@@ -85,9 +67,9 @@ const getReview = (pid = 1, callback) => {
   });
 };
 
-const updateReview = (reviewId, reviewTitle, reviewDate = new Date(), reviewUname, reviewBody, reviewSRating = 0, callback) => {
-  connection.query('UPDATE reviews SET title = $1, datePosted = $2, username = $3, body = $4, star_rating = $5, prod_id = $6 WHERE id = $7',
-  [reviewTitle, reviewDate, reviewUname, reviewBody, reviewSRating, reviewId]).then(res => {
+const updateReview = (reviewId, reviewTitle, reviewDate = new Date(), reviewUname, reviewBody, reviewSRating = 0, userId, prodId, callback) => {
+  connection.query('UPDATE reviews SET title = $1, date = $2, body = $3, star_rating = $4, user_id = $5, prod_id = $6 WHERE id = $7',
+  [reviewTitle, reviewDate, reviewBody, reviewSRating, userId, prodId, reviewId]).then(res => {
     callback(null, res);
   }).catch(err => {
     callback(err, null);
@@ -188,7 +170,7 @@ module.exports = {
   updateImage,
   deleteImage,
   postReview,
-  getReview,
+  getReviews,
   updateReview,
   deleteReview,
   createUser,

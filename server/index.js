@@ -5,9 +5,19 @@ const bodyParser = require('body-parser');
 const db = require('../database/index.js');
 
 const app = express();
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(__dirname + '/../public/'));
+
+app.use((req, res, next) => {
+  // sometimes requests would be in body or query.
+  // just copy over for now.
+  if (req.body) {
+    req.query = {...req.body};
+  }
+  next();
+});
 
 require('newrelic');
 
@@ -68,14 +78,14 @@ app.post('/api/ratings/images/delete/:imgId', (req, res) => {
 // ========== REVIEWS ==========
 // add review
 app.post('/api/ratings/reviews/insert/:pId', (req, res) => {
-  const productId = Number(req.params.pId);
-  const uname = String(req.query.username);
   const title = String(req.query.title);
   const date = req.query.date;
   const body = String(req.query.body);
   const starRating = Number(req.query.rating);
+  const productId = Number(req.params.pId);
+  const userId = Number(req.query.user_id);
 
-  db.postReview(title, date, uname, body, starRating, productId, (err, dat) => {
+  db.postReview(title, date, body, starRating, userId, productId, (err, dat) => {
     if (err) {
       res.status(401).send(err);
     } else {
@@ -84,22 +94,11 @@ app.post('/api/ratings/reviews/insert/:pId', (req, res) => {
   });
 });
 
-// get reviews. original and shouldnt practically be used
-/*app.get('/api/ratings/reviews', (req, res) => {
-  db.getReviews((err, dat) => {
-    if (err) {
-      res.status(401).send(err);
-    } else {
-      res.status(200).send(dat);
-    }
-  });
-});*/
-
 // gets a single review based on product id
 app.get('/api/ratings/reviews/:pId', (req, res) => {
   const productId = Number(req.params.pId);
 
-  db.getReview(productId, (err, dat) => {
+  db.getReviews(productId, (err, dat) => {
     if (err) {
       res.status(401).send(err);
     } else {
