@@ -18,3 +18,12 @@ scenarios:
   - flow:
     - get:
         url: "/"
+    - post:
+        url: "/api/ratings/reviews/insert/1000"
+        json:
+          title: 'test title'
+          date: 'test date'
+          body: 'test body'
+          rating: 0
+          prod_id: 1
+          user_id: 1
