@@ -67,7 +67,7 @@ const getReviews = (pid = 1, callback) => {
   });
 };
 
-const updateReview = (reviewId, reviewTitle, reviewDate = new Date(), reviewUname, reviewBody, reviewSRating = 0, userId, prodId, callback) => {
+const updateReview = (reviewId, reviewTitle, reviewDate = new Date(), reviewBody, reviewSRating = 0, userId, prodId, callback) => {
   connection.query('UPDATE reviews SET title = $1, date = $2, body = $3, star_rating = $4, user_id = $5, prod_id = $6 WHERE id = $7',
   [reviewTitle, reviewDate, reviewBody, reviewSRating, userId, prodId, reviewId]).then(res => {
     callback(null, res);

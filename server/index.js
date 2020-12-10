@@ -112,12 +112,12 @@ app.post('/api/ratings/reviews/update/:rId', (req, res) => {
   const reviewId = Number(req.params.rId);
   const title = String(req.query.title);
   const date = req.query.date;
-  const uname = String(req.query.name);
   const body = String(req.query.body);
   const starRating = Number(req.query.rating);
+  const userId = String(req.query.uid);
   const productId = Number(req.query.pid);
 
-  db.updateReview(reviewId, title, date, uname, body, starRating, productId, (err, dat) => {
+  db.updateReview(reviewId, title, date, body, starRating, userId, productId, (err, dat) => {
     if (err) {
       res.status(401).send(err);
     } else {
