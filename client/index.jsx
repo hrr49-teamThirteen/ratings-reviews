@@ -12,28 +12,13 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      prodId: 1005,
+      prodId: 20,
       currentUser: '',
       rateableAttributes: [], // build a function in fakeData and call it here
       reviews: [],
       visibleReviews: [], // this'll start empty of course
       images: []
     };
-  }
-
-  componentDidMount() {
-    let item_id = window.location.pathname;
-    // Remove the first forward slash
-    item_id = item_id.split('');
-    item_id.shift();
-    item_id = item_id.join('');
-
-    if (item_id >= 0) {
-      this.setState({prodId: item_id});
-    }
-
-    this.getImages();
-    this.getReviews();
   }
 
   getImages() {
@@ -88,6 +73,25 @@ class App extends React.Component {
   // getReviews() {
   //   axios.get('');
   // }
+
+  async componentDidMount() {
+    let item_id = window.location.pathname;
+    // Remove the first forward slash
+    item_id = item_id.split('');
+    item_id.shift();
+    item_id = item_id.join('');
+
+    if (item_id >= 0) {
+      await this.setState({prodId: item_id});
+    }
+
+    // i could get the id from the url and pass those in as arguments to these functions
+    // this.getProduct();
+    if (this.state.prodId) {
+      await this.getImages();
+      await this.getReviews();
+    }
+  }
 
   render() { // just get the getReviews data elsewhere
     return (
