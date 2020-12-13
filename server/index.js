@@ -3,8 +3,9 @@ const port = 4444;
 const express = require('express');
 const bodyParser = require('body-parser');
 const db = require('../database/index.js');
-
+const path = require('path');
 const app = express();
+require('newrelic');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -19,7 +20,9 @@ app.use((req, res, next) => {
   next();
 });
 
-require('newrelic');
+app.get('/:item_id', (req, res) => {
+  res.sendFile(`${path.resolve(__dirname, '../', 'public')}/index.html`);
+});
 
 // =========== IMAGES ==========
 // add image

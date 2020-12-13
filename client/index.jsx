@@ -21,6 +21,18 @@ class App extends React.Component {
     };
   }
 
+  componentDidMount() {
+    let item_id = window.location.pathname;
+    // Remove the first forward slash
+    item_id = item_id.split('');
+    item_id.shift();
+    item_id = item_id.join('');
+
+    if (item_id >= 0) {
+      this.setState({prodId: item_id});
+    }
+  }
+
   getImages() {
     axios.get(`/api/ratings/images/${this.state.prodId}`)
       .then(response => {
