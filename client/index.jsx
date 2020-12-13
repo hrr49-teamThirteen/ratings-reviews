@@ -31,6 +31,9 @@ class App extends React.Component {
     if (item_id >= 0) {
       this.setState({prodId: item_id});
     }
+
+    this.getImages();
+    this.getReviews();
   }
 
   getImages() {
@@ -85,13 +88,6 @@ class App extends React.Component {
   // getReviews() {
   //   axios.get('');
   // }
-
-  async componentDidMount() {
-    // i could get the id from the url and pass those in as arguments to these functions
-    // this.getProduct();
-    await this.getImages();
-    await this.getReviews();
-  }
 
   render() { // just get the getReviews data elsewhere
     return (
