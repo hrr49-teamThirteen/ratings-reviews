@@ -68,7 +68,7 @@ class App extends React.Component {
     item_id.shift();
     item_id = item_id.join('');
 
-    if (item_id >= 0) {
+    if (item_id > 0) {
       await this.setState({prodId: item_id});
     }
 
