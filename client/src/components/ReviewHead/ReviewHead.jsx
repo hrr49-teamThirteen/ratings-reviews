@@ -9,7 +9,7 @@ const ReviewHead = (props) => {
     <div>
       <h2>Guest Ratings &amp; Reviews</h2>
       <div class='star-rating-table'>
-        <StarScore
+        {/* <StarScore
           starRating = {5}
           percentage = {30}
         />
@@ -28,7 +28,7 @@ const ReviewHead = (props) => {
         <StarScore
           starRating = {1}
           percentage = {10}
-        />
+        /> */}
       </div>
     </div>
   );

@@ -13,24 +13,31 @@ class Review extends React.Component {
     };
   }
 
-  componentDidMount() {
+  /*componentDidMount() {
     if (this.state.image === null) {
       if (Math.random() < 0.4) {
         const randImage = this.props.images[Math.floor(Math.random() * this.props.images.length)];
         this.setState({image: randImage.loc});
       }
     }
-  }
+  }*/
 
   render() {
+    console.log(this.props.review.star_rating);
     return (
       <div className = {styles.review}>
-        <StarMeter score={this.props.review.starRating} />
+        <StarMeter score={this.props.review.star_rating} />
         <div className={styles.username}>{this.props.review.username}</div>
         <div className={styles.datePosted}>{this.props.datePosted}</div>
         <div className={styles.body}>{this.props.review.body}</div>
-        {/* <div className={styles.starRating}>STAR RATING: {review.star_rating}</div> */}
-        <Image image={this.state.image}/>
+        {
+          this.props.images.map(image => {
+            console.log(image.review_id)
+            if (this.props.review.id === image.review_id) {
+              return <Image image={image.loc}/>
+            }
+          })
+        }
         <HelpfulnessScore helpfulnessScore={this.state.helpfulnessScore}/>
       </div>
     );

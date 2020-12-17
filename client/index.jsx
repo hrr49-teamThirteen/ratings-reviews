@@ -12,19 +12,21 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      prodId: 20,
+      prodId: 11,
       currentUser: '',
       rateableAttributes: [], // build a function in fakeData and call it here
       reviews: [],
       visibleReviews: [], // this'll start empty of course
       images: []
     };
+
+    this.getReviews = this.getReviews.bind(this);
   }
 
   getImages() {
     axios.get(`/api/ratings/images/${this.state.prodId}`)
       .then(response => {
-        console.log('this is the data of the response: ' + response.data);
+        //('this is the data of the response: ' + response.data);
         // can't I just use one setState for both?
         this.setState({images: response.data});
       }).catch(error => {
@@ -59,21 +61,6 @@ class App extends React.Component {
     });
   }
 
-  showReviews(quantity) {
-    // make a copy of state.visibleReviews as a variable
-    // for a number of times equal to quantity
-    // push the item from this.reviews at an index equal to the length of visibleReviews onto the variable copy of visibleReviews
-    // set state.visibleReviews equal to the copy
-  }
-
-  // adjustHelpfulness(value) {
-  //   event.target.value += value;
-  // }
-
-  // getReviews() {
-  //   axios.get('');
-  // }
-
   async componentDidMount() {
     let item_id = window.location.pathname;
     // Remove the first forward slash
@@ -93,28 +80,24 @@ class App extends React.Component {
     }
   }
 
-  render() { // just get the getReviews data elsewhere
-    return (
-      <div>
+  render() {
+    if (this.state.reviews.length < 1) {
+      return (<h3>No reviews for this product</h3>);
+    } else {
+      return (
         <div>
-          <ReviewHead
-            rateableAttributes = {this.state.rateableAttributes}
-            quantityOfReviews = {this.state.reviews.length}
-          />
+          <div>
+            <ReviewHead rateableAttributes={this.state.rateableAttributes} quantityOfReviews={this.state.reviews.length}/>
+          </div>
+          <div>
+            <ImageCarousel images={this.state.images}/>
+          </div>
+          <div>
+            <ReviewContainer reviews={this.state.reviews} images={this.state.images}/>
+          </div>
         </div>
-        <div>
-          <ImageCarousel
-            images = {this.state.images}
-          />
-        </div>
-        <div>
-          <ReviewContainer
-            reviews = {this.state.reviews} // gonna want this to be visible reviews eventually
-            images = {this.state.images}
-          />
-        </div>
-      </div>
-    );
+      );
+    }
   }
 }
 
