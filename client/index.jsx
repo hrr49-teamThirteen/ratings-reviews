@@ -67,6 +67,7 @@ class App extends React.Component {
     item_id = item_id.split('');
     item_id.shift();
     item_id = item_id.join('');
+    item_id = Number(item_id);
 
     if (item_id > 0) {
       await this.setState({prodId: item_id});
