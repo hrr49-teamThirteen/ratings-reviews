@@ -6,7 +6,7 @@ import ReviewFeed from '../ReviewFeed/ReviewFeed.jsx';
 // for info on how to make the percentage meter
 
 const ReviewContainer = (props) => {
-  console.log(props.images);
+  //console.log(props.images);
   return (
     <div>
       <ReviewFilter/>

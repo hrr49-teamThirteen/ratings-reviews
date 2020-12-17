@@ -24,7 +24,7 @@ const createImage = (reviewId, imgLoc, callback) => {
 
 // reads all images
 const fetchImages = (prodId, callback) => {
-  connection.query('select i.loc from reviews r left join images i on r.id = i.review_id where r.prod_id = $1;', [prodId]).then(res => {
+  connection.query('select i.loc,i.review_id from reviews r left join images i on r.id = i.review_id where r.prod_id = $1;', [prodId]).then(res => {
     callback(null, res.rows);
   }).catch(err => {
     callback(err, null);

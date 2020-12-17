@@ -5,7 +5,7 @@ import Review from '../Review/Review.jsx';
 // for info on how to make the percentage meter
 
 const ReviewFeed = (props) => {
-  console.log(props.images);
+  //console.log(props.images);
   return (
     <div>
       {props.reviews.map(review => {
