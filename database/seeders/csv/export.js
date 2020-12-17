@@ -80,7 +80,7 @@ productsWriteStream.write('product_name\n');
 
       // Generate images.csv
       function getImagesRow() {
-        const img = `${aws.url}/images/${getRandomIntRange(1, 60)}.webp`
+        const img = `/images/${getRandomIntRange(1, 60)}.webp`
         return `${img},${getRandomIntRange(1, reviewsCount)}\n`;  // faker image used by original repo
       }
 
@@ -105,5 +105,3 @@ productsWriteStream.write('product_name\n');
     })();
   })();
 })();
-
-
