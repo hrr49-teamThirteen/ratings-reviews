@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const db = require('../database/index.js');
 const path = require('path');
 const app = express();
-require('newrelic');
+//require('newrelic');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -18,6 +18,15 @@ app.use((req, res, next) => {
     req.query = {...req.body};
   }
   next();
+});
+
+app.get('/ratings/images/:filename', (req, res) => {
+  const filename = req.params.filename;
+  res.sendFile(`${path.resolve(__dirname, '../public', 'images')}/${filename}`);
+});
+
+app.get('/:item_id', (req, res) => {
+  res.sendFile(`${path.resolve(__dirname, '../', 'public')}/index.html`);
 });
 
 app.get('/:item_id', (req, res) => {
@@ -97,11 +106,24 @@ app.post('/api/ratings/reviews/insert/:pId', (req, res) => {
   });
 });
 
-// gets a single review based on product id
+// gets a all reviews for a product based on product id
 app.get('/api/ratings/reviews/:pId', (req, res) => {
   const productId = Number(req.params.pId);
 
   db.getReviews(productId, (err, dat) => {
+    if (err) {
+      res.status(401).send(err);
+    } else {
+      res.status(200).send(dat);
+    }
+  });
+});
+
+// gets a all reviews for a product based on product id
+app.get('/api/ratings/reviews/images/:pId', (req, res) => {
+  const productId = Number(req.params.pId);
+
+  db.getReviewsAndImages(productId, (err, dat) => {
     if (err) {
       res.status(401).send(err);
     } else {
