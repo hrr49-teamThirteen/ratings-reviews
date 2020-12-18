@@ -80,7 +80,11 @@ productsWriteStream.write('product_name\n');
 
       // Generate images.csv
       function getImagesRow() {
+<<<<<<< HEAD
         const img = `/reviews/images/${getRandomIntRange(1, 60)}.webp`
+=======
+        const img = `/images/${getRandomIntRange(1, 60)}.webp`
+>>>>>>> fd2266a7cc01673d8f10697d7589c1b2102c31d4
         return `${img},${getRandomIntRange(1, reviewsCount)}\n`;  // faker image used by original repo
       }
 
