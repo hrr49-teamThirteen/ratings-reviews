@@ -20,7 +20,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get('api/ratings/images/file/:filename', (req, res) => {
+app.get('/api/ratings/images/file/:filename', (req, res) => {
   const filename = req.params.filename;
   res.sendFile(`${path.resolve(__dirname, '../public', 'images')}/${filename}`);
 });
