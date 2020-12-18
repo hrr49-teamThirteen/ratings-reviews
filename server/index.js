@@ -20,7 +20,11 @@ app.use((req, res, next) => {
   next();
 });
 
+<<<<<<< HEAD
 app.get('/ratings/images/file/:filename', (req, res) => {
+=======
+app.get('/ratings/images/:filename', (req, res) => {
+>>>>>>> 12af6b2a61412abf1fd34bc3c7dda1fa328a1bab
   const filename = req.params.filename;
   res.sendFile(`${path.resolve(__dirname, '../public', 'images')}/${filename}`);
 });
