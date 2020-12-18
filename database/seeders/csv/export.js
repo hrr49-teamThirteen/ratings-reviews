@@ -81,7 +81,7 @@ productsWriteStream.write('product_name\n');
       // Generate images.csv
       function getImagesRow() {
         const img = `/api/reviews/images/file/${getRandomIntRange(1, 60)}.webp`
-e        return `${img},${getRandomIntRange(1, reviewsCount)}\n`;  // faker image used by original repo
+        return `${img},${getRandomIntRange(1, reviewsCount)}\n`;  // faker image used by original repo
       }
 
       const imagesWriteStream = fs.createWriteStream(`${baseCsvDir}images.csv`);
